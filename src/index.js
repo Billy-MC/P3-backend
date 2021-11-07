@@ -1,6 +1,6 @@
-const const express = require('express')
-const app = express()
-const PORT = 3000
+const express = require('express');
+const app = express();
+const PORT = 3000;
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.listen(PORY, () => console.log(`listening on port ${PORT}`))
+app.get('/', (req, res) => res.send('Hello World!'));
+app.listen(PORY, () => console.log(`listening on port ${PORT}`));
