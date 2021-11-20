@@ -1,8 +1,7 @@
+const express = require('express');
 const config = require('./src/config/app');
 const app = require('./app');
 const { connectToMongoDB } = require('./src/loaders/mongodb');
-
-const express = require('express');
 
 require('dotenv').config();
 
