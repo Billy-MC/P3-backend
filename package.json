@@ -4,8 +4,8 @@
 	"description": "This README would normally document whatever steps are necessary to get your application up and running.",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon src/index.js",
-		"debug": "nodemon --inspect src/index.js"
+		"dev": "nodemon index.js",
+		"debug": "nodemon --inspect index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -18,7 +18,17 @@
 	},
 	"homepage": "https://bitbucket.org/billychui/devils-crm-backend#readme",
 	"devDependencies": {
-		"nodemon": "^2.0.14"
+		"eslint": "^8.2.0",
+		"eslint-config-airbnb": "^19.0.0",
+		"eslint-config-node": "^4.1.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-react": "^7.27.1",
+		"nodemon": "^2.0.14",
+		"prettier": "^2.4.1",
+		"pretty-quick": "^3.1.2"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
@@ -26,5 +36,10 @@
 		"express": "^4.17.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.12"
+	},
+	"eslintConfig": {
+		"rules": {
+			"no-console": "error"
+		}
 	}
 }

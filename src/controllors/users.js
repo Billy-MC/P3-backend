@@ -1,5 +1,3 @@
-const Customer = require('../models/customer');
-
 //display all
 exports.index = (req, res) => {
 	return res.status(200).send('Failed');

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-exports.connectToDB = () => {
+exports.connectToMongoDB = () => {
 	const { DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD, DB_PORT } = process.env;
 
 	let connectionString;
