@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "nodemon index.js",
 		"debug": "nodemon --inspect index.js",
-		"lint": "./node_modules/.bin/eslint",
+		"eslint": "./node_modules/.bin/eslint .",
 		"lintfix": "eslint src --fix --cache"
 	},
 	"repository": {
@@ -28,9 +28,11 @@
 		"eslint-config-node": "^4.1.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-jsx-a11y": "^6.5.1",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.27.1",
+		"eslint-plugin-react-hooks": "^4.3.0",
 		"nodemon": "^2.0.14",
 		"prettier": "^2.4.1",
 		"pretty-quick": "^3.1.2"
@@ -41,10 +43,5 @@
 		"express": "^4.17.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.12"
-	},
-	"eslintConfig": {
-		"rules": {
-			"no-console": "error"
-		}
 	}
 }
