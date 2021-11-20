@@ -1,11 +1,17 @@
 module.exports = {
 	extends: ['react-app', 'airbnb', 'prettier'],
 	plugins: ['prettier'],
-	parser: 'babel-eslint',
+	parser: '@babel/eslint-parser',
 	parserOptions: {
 		sourceType: 'module',
 		allowImportExportEverywhere: false,
 		codeFrame: false,
+		ecmaFeatures: {
+			globalReturn: false,
+		},
+		babelOptions: {
+			configFile: 'path/to/config.js',
+		},
 	},
 	env: {
 		browser: true,

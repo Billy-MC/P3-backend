@@ -20,6 +20,8 @@
 	},
 	"homepage": "https://bitbucket.org/billychui/devils-crm-backend#readme",
 	"devDependencies": {
+		"@babel/core": "^7.16.0",
+		"@babel/eslint-parser": "^7.16.3",
 		"eslint": "^8.2.0",
 		"eslint-config-airbnb": "^19.0.0",
 		"eslint-config-airbnb-base": "^15.0.0",
