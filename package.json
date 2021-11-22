@@ -1,62 +1,45 @@
 {
-	"name": "devilscrm",
-	"version": "1.0.0",
-	"description": "This README would normally document whatever steps are necessary to get your application up and running.",
-	"main": "index.js",
-	"scripts": {
-		"dev": "nodemon index.js",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon",
-		"inspect": "nodemon --inspect src/index.ts",
-		"lint": "npm run lint:js ",
-		"lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
-		"lint:js": "npm run lint:eslint src/",
-		"lint:fix": "npm run lint:js -- --fix"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://billychui@bitbucket.org/billychui/devils-crm-backend.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://bitbucket.org/billychui/devils-crm-backend/issues"
-	},
-	"homepage": "https://bitbucket.org/billychui/devils-crm-backend#readme",
-	"devDependencies": {
-		"@babel/core": "^7.16.0",
-		"@babel/eslint-parser": "^7.16.3",
-		"@types/express": "^4.17.13",
-		"@types/jest": "^27.0.3",
-		"@types/node": "^16.11.9",
-		"@typescript-eslint/eslint-plugin": "^5.4.0",
-		"@typescript-eslint/parser": "^5.4.0",
-		"eslint": "^8.3.0",
-		"eslint-config-airbnb": "^19.0.0",
-		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-config-node": "^4.1.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-import": "^2.25.3",
-		"eslint-plugin-jsx-a11y": "^6.5.1",
-		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-prettier": "^4.0.0",
-		"eslint-plugin-react": "^7.27.0",
-		"eslint-plugin-react-hooks": "^4.3.0",
-		"jest": "^27.3.1",
-		"nodemon": "^2.0.14",
-		"prettier": "^2.4.1",
-		"pretty-quick": "^3.1.2",
-		"ts-node": "^10.4.0",
-		"ts-node-dev": "^1.1.8",
-		"typescript": "^4.5.2"
-	},
-	"dependencies": {
-		"cors": "^2.8.5",
-		"dotenv": "^10.0.0",
-		"express": "^4.17.1",
-		"jsonwebtoken": "^8.5.1",
-		"mongodb": "^4.2.0",
-		"mongoose": "^6.0.13",
-		"winston": "^3.3.3"
-	}
+  "name": "crm-backend-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon",
+    "inspect": "nodemon --inspect src/index.ts",
+    "lint": "npm run lint:js ",
+    "lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
+    "lint:js": "npm run lint:eslint src/",
+    "lint:fix": "npm run lint:js -- --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.2.0",
+    "mongoose": "^6.0.13",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
+  }
 }
