@@ -1,13 +1,21 @@
 import { Router, Request, Response } from 'express';
-import { store, show, update, destory, index } from '../../../controllers/product';
+import ProductsController from '../../../controllers/product';
+import CustomersController from '../../../controllers/customer';
+
 const route = Router();
 
 // import productController from '../../../controller/product';
 
 export default () => {
-  route.get('/products', index);
-  route.post('/products', store);
-  route.put('/products', update);
-  route.delete('/products', destory);
-  route.get('/products/:id', show);
+  route.get('/products', CustomersController.index);
+  route.post('/products', CustomersController.store);
+  route.put('/products', CustomersController.update);
+  route.delete('/products', CustomersController.destory);
+  route.get('/products/:id', CustomersController.show);
+
+  route.get('/customers', ProductsController.index);
+  route.post('/customers', ProductsController.store);
+  route.put('/customers', ProductsController.update);
+  route.delete('/customers', ProductsController.destory);
+  route.get('/customers/:id', ProductsController.show);
 };

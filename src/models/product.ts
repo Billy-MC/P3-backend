@@ -1,5 +1,8 @@
-import { ObjectId } from 'mongodb';
+import mongoose from 'mongoose';
 
-export default class Product {
-  constructor(public name: string, public price: number, public category: string, public id?: ObjectId) {}
-}
+const { Schema } = mongoose;
+
+const productSchema = new Schema({});
+
+const Product = mongoose.model('Customer', productSchema);
+module.exports = Product;
