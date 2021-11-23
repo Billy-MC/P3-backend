@@ -2,20 +2,22 @@ import { Router, Request, Response } from 'express';
 import ProductsController from '../../../controllers/product';
 import CustomersController from '../../../controllers/customer';
 
-const route = Router();
+const router = Router();
 
 // import productController from '../../../controller/product';
 
-export default () => {
-  route.get('/products', CustomersController.index);
-  route.post('/products', CustomersController.store);
-  route.put('/products', CustomersController.update);
-  route.delete('/products', CustomersController.destory);
-  route.get('/products/:id', CustomersController.show);
+router.get('/', (req: Request, res: Response) => res.sendStatus(200));
 
-  route.get('/customers', ProductsController.index);
-  route.post('/customers', ProductsController.store);
-  route.put('/customers', ProductsController.update);
-  route.delete('/customers', ProductsController.destory);
-  route.get('/customers/:id', ProductsController.show);
-};
+router.get('/products', CustomersController.index);
+router.post('/products', CustomersController.store);
+router.put('/products', CustomersController.update);
+router.delete('/products', CustomersController.destory);
+router.get('/products/:id', CustomersController.show);
+
+router.get('/customers', ProductsController.index);
+router.post('/customers', ProductsController.store);
+router.put('/customers', ProductsController.update);
+router.delete('/customers', ProductsController.destory);
+router.get('/customers/:id', ProductsController.show);
+
+export default router;
