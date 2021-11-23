@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 class OrdersController {
-  async index(req: Request, res: Response) {
+  async readAll(_req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
     } catch (e) {
@@ -9,14 +9,14 @@ class OrdersController {
     }
   }
 
-  async show(req: Request, res: Response) {
+  async read(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
     } catch (e) {
       res.status(500).send(e.message);
     }
   }
-  async destory(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
     } catch (e) {
@@ -30,7 +30,7 @@ class OrdersController {
       res.status(500).send(e.message);
     }
   }
-  async store(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
     } catch (e) {

@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import apiRouter from '../routes/api/v1/';
+import apiRouter from '../routes/api/';
 import config from '../config';
 
 export default ({ app }: any) => {

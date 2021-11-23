@@ -6,19 +6,17 @@ if (envFound.error) {
 }
 
 export default {
-  /**
-   * Your favorite port
-   */
   port: process.env.PORT || 8000,
 
-  /**
-   * That long string from mlab
-   */
   databaseURL: process.env.MONGODB_URI,
-  /**
-   * API configs
-   */
+
   api: {
-    prefix: process.env.API_PREFIX || '/api/v1',
+    prefix: process.env.API_PREFIX || '/api',
   },
+
+  databaseHost: process.env.DB_HOST,
+
+  databaseName: process.env.DB_DATABASE,
+
+  databasePort: process.env.DB_PORT,
 };

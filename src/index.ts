@@ -5,8 +5,6 @@ const app = require('./app');
 async function startServer() {
   app.use(express.json());
 
-  //await require('./loaders').default({ expressApp: app });
-
   app
     .listen(config.port, () => {
       console.log(`
