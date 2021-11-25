@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { readAll, update, destory, read, create } from '../../controllers/user';
+import UsersController from '../../controllers/user';
 
 const route = Router();
 
 export default (app: Router) => {
   app.use('/users', route);
-  route.get('/', readAll);
-  route.post('/', create);
-  route.put('/:id', update);
-  route.delete('/:id', destory);
-  route.get('/:id', read);
+  route.get('/', UsersController.readAll);
+  route.post('/', UsersController.create);
+  route.put('/:id', UsersController.update);
+  route.delete('/:id', UsersController.delete);
+  route.get('/:id', UsersController.read);
 };

@@ -1,14 +1,14 @@
 import { Router } from 'express';
 
-import { readAll, update, destory, read, create } from '../../controllers/customer';
+import CustomersController from '../../controllers/customer';
 
 const route = Router();
 
 export default (app: Router) => {
   app.use('/customers', route);
-  route.get('/', readAll);
-  route.post('/', create);
-  route.put('/:id', update);
-  route.delete('/:id', destory);
-  route.get('/:id', read);
+  route.get('/', CustomersController.readAll);
+  route.post('/', CustomersController.create);
+  route.put('/:id', CustomersController.update);
+  route.delete('/:id', CustomersController.delete);
+  route.get('/:id', CustomersController.read);
 };
