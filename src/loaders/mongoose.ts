@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import * as mongoDB from 'mongodb';
 import config from '../config';
-import { disconnect } from 'process';
+
 // console.log(config.databaseHost);
 export default async () => {
   let connectionString;
@@ -21,4 +21,5 @@ export default async () => {
     console.log('Could not connect to db');
     process.exit(1);
   }
+  return;
 };
