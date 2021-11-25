@@ -11,7 +11,7 @@ export default {
   databaseURL: process.env.MONGODB_URI,
 
   api: {
-    prefix: process.env.API_PREFIX || '/api',
+    prefix: process.env.API_PREFIX || '/api/v1',
   },
 
   databaseHost: process.env.DB_HOST,
