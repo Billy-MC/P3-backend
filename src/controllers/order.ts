@@ -1,42 +1,22 @@
 import { Request, Response } from 'express';
 
-class OrdersController {
-  async readAll(_req: Request, res: Response) {
-    try {
-      res.status(200).send('Failed');
-    } catch (e) {
-      res.status(500).send(e.message);
-    }
-  }
-
-  async read(req: Request, res: Response) {
-    try {
-      res.status(200).send('Failed');
-    } catch (e) {
-      res.status(500).send(e.message);
-    }
-  }
-  async delete(req: Request, res: Response) {
-    try {
-      res.status(200).send('Failed');
-    } catch (e) {
-      res.status(500).send(e.message);
-    }
-  }
-  async update(req: Request, res: Response) {
-    try {
-      res.status(200).send('Failed');
-    } catch (e) {
-      res.status(500).send(e.message);
-    }
-  }
-  async create(req: Request, res: Response) {
-    try {
-      res.status(200).send('Failed');
-    } catch (e) {
-      res.status(500).send(e.message);
-    }
+export async function readAll(_req: Request, res: Response) {
+  try {
+    res.status(200).send('Failed');
+  } catch (e) {
+    res.status(500).send(e.message);
   }
 }
 
-export default new OrdersController();
+export async function read(req: Request, res: Response) {
+  res.status(200).send('Failed');
+}
+export async function destory(req: Request, res: Response) {
+  res.status(200).send('Failed');
+}
+export async function update(req: Request, res: Response) {
+  res.status(200).send('Failed');
+}
+export async function create(req: Request, res: Response) {
+  res.status(200).send('Failed');
+}
