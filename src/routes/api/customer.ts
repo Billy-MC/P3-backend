@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { readAll, update, destory, read, create } from '../../controllers/customer';
-const router = Router();
 
 export default (app: Router) => {
   app.get('/customers', readAll);
