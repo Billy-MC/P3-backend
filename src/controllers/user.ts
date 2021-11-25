@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export async function readAll(req: Request, res: Response) {
+export async function readAll(_req: Request, res: Response) {
   res.status(200).send('Failed');
 }
 
