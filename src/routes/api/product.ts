@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ProductsController from '../../controllers/product';
+
 const route = Router();
 
 export default (app: Router) => {

@@ -1,24 +1,33 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["es2017", "esnext.asynciterable"],
-    "typeRoots": ["./node_modules/@types", "./src/types"],
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "lib": ["es2018"],
+    "rootDirs": ["tests", "src"],
+    "target": "es2018",
     "module": "commonjs",
-    "pretty": true,
-    "sourceMap": true,
+    "moduleResolution": "node",
     "outDir": "./build",
-    "allowJs": true,
-    "noEmit": false,
-    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+       "paths": {
+           "*": [
+               "node_modules/*",
+               "tests/*",
+           ]
+     }
   },
-  "exclude": ["node_modules", "tests"]
+  "include": [
+    "src/**/*.ts",
+    ".env",
+    ".env.*",
+    "tests/**/*.ts",
+    "index.js",
+    "jest.config.js",
+    "config/*.config.js" // for *.config.js files
+  ],
+  "exclude": [
+    "node_modules",
+  ]
 }

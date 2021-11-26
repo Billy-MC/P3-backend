@@ -16,6 +16,7 @@ class ProductsController {
       res.status(500).send(e.message);
     }
   }
+
   async delete(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
@@ -23,6 +24,7 @@ class ProductsController {
       res.status(500).send(e.message);
     }
   }
+
   async update(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');
@@ -30,6 +32,7 @@ class ProductsController {
       res.status(500).send(e.message);
     }
   }
+
   async create(req: Request, res: Response) {
     try {
       res.status(200).send('Failed');

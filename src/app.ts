@@ -1,5 +1,5 @@
-import express from 'express';
-const loader = require('./loaders');
+import * as express from 'express';
+import * as loader from './loaders';
 
 const app = express();
 loader.init(app);

@@ -1,10 +1,7 @@
 import config from './config';
-import express from 'express';
-const app = require('./app');
+import app = require('./app');
 
 async function startServer() {
-  app.use(express.json());
-
   app
     .listen(config.port, () => {
       console.log(`
