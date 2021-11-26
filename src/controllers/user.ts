@@ -8,7 +8,7 @@ const assert = require('assert');
 class UsersController {
   async readAll(_req: Request, res: Response) {
     try {
-      res.status(200).send('Failed');
+      res.status(200).send('Connected');
     } catch (e) {
       res.status(500).send(e.message);
     }
@@ -16,7 +16,7 @@ class UsersController {
 
   async read(req: Request, res: Response) {
     try {
-      res.status(200).send('Failed');
+      res.status(200).send('Connected');
     } catch (e) {
       res.status(500).send(e.message);
     }
@@ -41,13 +41,16 @@ class UsersController {
       assert(body !== undefined, 'request body must exist!');
       assert(body.email !== undefined, 'email must exist!');
       assert(body.firstName !== undefined, 'first name must exist!');
+      assert(body.lastName !== undefined, 'last name must exist!');
+      assert(body.address !== undefined, 'address must exist!');
 
       const user = new User(body);
-      const res = await user.save();
+      console.log(user)
+      await user.save();
 
       res.status(201).json({
         message: "Created",
-        id: res._id, //give by mongoDB add
+        // id: res._id, //give by mongoDB add
       });
     } catch (e) {
         res.status(400).send(e.message);
