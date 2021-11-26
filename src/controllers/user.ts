@@ -37,14 +37,15 @@ class UsersController {
   }
   async create(req: Request, res: Response) {
     try {
-      const body = req.body;
-      assert(body !== undefined, 'request body must exist!');
-      assert(body.email !== undefined, 'email must exist!');
-      assert(body.firstName !== undefined, 'first name must exist!');
-      assert(body.lastName !== undefined, 'last name must exist!');
-      assert(body.address !== undefined, 'address must exist!');
-
-      const user = new User(body);
+      const {email, firstName, lastName, address} = req.body;
+      // assert(body !== undefined, 'request body must exist!');
+      assert(email !== undefined, 'email must exist!');
+      assert(firstName !== undefined, 'first name must exist!');
+      assert(lastName !== undefined, 'last name must exist!');
+      assert(address.city !== undefined, 'city must exist!');
+      assert(address.street !== undefined, 'street must exist!');
+      assert(address.postCode !== undefined, 'postCode must exist!');
+      const user = new User({email, firstName, lastName, address});
       console.log(user)
       await user.save();
 
