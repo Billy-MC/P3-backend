@@ -1,6 +1,6 @@
 import express from 'express';
 const loader = require('./loaders');
-var bodyParser = require('body-parser');
+// var bodyParser = require('body-parser');
 
 const app = express();
 // // parse application/x-www-form-urlencoded
