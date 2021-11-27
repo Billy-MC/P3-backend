@@ -15,7 +15,7 @@ export default async () => {
   const db: mongoDB.Db = client.db(process.env.DB_NAME);
   console.log(connectionString);
   try {
-    await client.connect();
+    await mongoose.connect(connectionString);
     console.log(`Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.log('Could not connect to db');

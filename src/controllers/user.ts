@@ -1,6 +1,7 @@
 import User from '@/models/users';
 import order from '@/routes/api/order';
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 // import { assert } from 'node:console';
 const assert = require('assert');
 
@@ -8,7 +9,8 @@ const assert = require('assert');
 class UsersController {
   async readAll(_req: Request, res: Response) {
     try {
-      res.status(200).send('Connected');
+      const users = User.find();
+      res.status(200).json(users);
     } catch (e) {
       res.status(500).send(e.message);
     }
@@ -16,9 +18,34 @@ class UsersController {
 
   async read(req: Request, res: Response) {
     try {
-      res.status(200).send('Connected');
+      const {id} = req.params;
+      assert(id, 'id must exist!');
+      const userById = User.findOne({
+         _id: new mongoose.Types.ObjectId(id)
+      });
+
+      // const getCircularReplacer = () => {
+      //   const seen = new WeakSet();
+      //   return (key, value) => {
+      //     if (typeof value === "object" && value !== null) {
+      //       if (seen.has(value)) {
+      //         return;
+      //       }
+      //       seen.add(value);
+      //     }
+      //     return value;
+      //   };
+      // };
+      
+      // const getDataById = JSON.stringify(res, getCircularReplacer());
+
+      if(res) {
+        res.status(200).json({message: userById});
+      }else{
+        res.status(404).json({message: `${id} not found`});
+      }
     } catch (e) {
-      res.status(500).send(e.message);
+      res.status(400).send(e.message);
     }
   }
   async delete(req: Request, res: Response) {
