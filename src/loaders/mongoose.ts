@@ -8,19 +8,19 @@ export default async () => {
   } else {
     connectionString = `mongodb://${process.env.DB_HOST}:${config.databasePort}/${config.databaseName}`;
   }
+  
+console.log(connectionString);
 
-  const db = mongoose.connection;
-  db.on('connected', () => {
-    console.log(connectionString);
-    console.log(`Successfully connected to database: ${process.env.DB_NAME}`);
+const connect = () => {
+  mongoose.connect(connectionString)
+  .then(()=>{
+  console.log(`Successfully connected to database: ${process.env.DB_NAME}`);})
+  .catch(error => {
+    console.error('Error connecting to database: ', error);
+    return process.exit(1);
   });
-  db.on('error', err => {
-    console.log('Could not connect to db');
-    console.error(err);
-    process.exit(1);
-  });
-  db.on('disconnected', () => {
-    console.log('mongoose connection is disconnected');
-  });
-  mongoose.connect(connectionString);
 };
+connect();
+
+mongoose.connection.on('disconnected', connect);
+}
