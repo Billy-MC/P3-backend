@@ -1,7 +1,6 @@
-import * as mongoDB from 'mongodb';
+import * as mongoose from 'mongoose';
 import config from '../config';
 
-// console.log(config.databaseHost);
 export default async () => {
   let connectionString;
   if (process.env.NODE_ENV === 'production') {
@@ -10,15 +9,18 @@ export default async () => {
     connectionString = `mongodb://${process.env.DB_HOST}:${config.databasePort}/${config.databaseName}`;
   }
 
-  const client: mongoDB.MongoClient = new mongoDB.MongoClient(connectionString);
-  const db: mongoDB.Db = client.db(process.env.DB_NAME);
-  console.log(connectionString);
-  try {
-    await client.connect();
-    console.log(`Successfully connected to database: ${db.databaseName}`);
-  } catch (error) {
+  const db = mongoose.connection;
+  db.on('connected', () => {
+    console.log(connectionString);
+    console.log(`Successfully connected to database: ${process.env.DB_NAME}`);
+  });
+  db.on('error', err => {
     console.log('Could not connect to db');
+    console.error(err);
     process.exit(1);
-  }
-  
+  });
+  db.on('disconnected', () => {
+    console.log('mongoose connection is disconnected');
+  });
+  mongoose.connect(connectionString);
 };
