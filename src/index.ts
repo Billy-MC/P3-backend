@@ -2,6 +2,7 @@ import config from './config';
 import app = require('./app');
 
 async function startServer() {
+  
   app
     .listen(config.port, () => {
       console.log(`
@@ -11,6 +12,7 @@ async function startServer() {
     `);
     })
     .on('error', err => {
+      console.log(err);
       process.exit(1);
     });
 }
