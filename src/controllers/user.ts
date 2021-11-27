@@ -23,22 +23,6 @@ class UsersController {
       const userById = User.findOne({
          _id: new mongoose.Types.ObjectId(id)
       });
-
-      // const getCircularReplacer = () => {
-      //   const seen = new WeakSet();
-      //   return (key, value) => {
-      //     if (typeof value === "object" && value !== null) {
-      //       if (seen.has(value)) {
-      //         return;
-      //       }
-      //       seen.add(value);
-      //     }
-      //     return value;
-      //   };
-      // };
-      
-      // const getDataById = JSON.stringify(res, getCircularReplacer());
-
       if(res) {
         res.status(200).json({message: userById});
       }else{
@@ -75,7 +59,6 @@ class UsersController {
       const user = new User({email, firstName, lastName, address});
       console.log(user)
       await user.save();
-
       res.status(201).json({
         message: "Created",
         // id: res._id, //give by mongoDB add
