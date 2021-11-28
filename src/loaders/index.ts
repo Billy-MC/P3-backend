@@ -1,8 +1,7 @@
 import expressLoader from './express';
 import mongooseLoader from './mongoose';
 
-exports.init = async expressApp => {
-  await mongooseLoader();
-
+export default async ({ expressApp }) => {
   await expressLoader({ app: expressApp });
+  await mongooseLoader();
 };

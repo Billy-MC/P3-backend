@@ -8,14 +8,17 @@
     "start": "nodemon",
     "start:prod": "NODE_ENV=production && npm start",
     "inspect": "nodemon --inspect src/index.ts",
-    "lint": "eslint src/**/*.ts",
+    "lint": "npm run lint:js ",
     "lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
-    "lint:fix": "eslint --fix src/**/*.ts"
+    "lint:js": "npm run lint:eslint src/",
+    "lint:fix": "npm run lint:js -- --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/body-parser": "^1.19.2",
+    "body-parser": "^1.19.0",
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

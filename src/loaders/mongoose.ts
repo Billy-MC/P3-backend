@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import config from '../config';
 
 export default async () => {
@@ -8,18 +8,19 @@ export default async () => {
   } else {
     connectionString = `mongodb://${process.env.DB_HOST}:${config.databasePort}/${config.databaseName}`;
   }
-  
+
   console.log(connectionString);
 
   const connect = async () => {
-    await mongoose.connect(connectionString)
-    .then(()=>console.log(`Successfully connected to database: ${process.env.DB_NAME}`))
-    .catch(error => {
-      console.error('Error connecting to database: ', error);
-      return process.exit(1);
-    });
+    await mongoose
+      .connect(connectionString)
+      .then(() => console.log(`Successfully connected to database: ${process.env.DB_NAME}`))
+      .catch(error => {
+        console.error('Error connecting to database: ', error);
+        return process.exit(1);
+      });
   };
   connect();
 
   mongoose.connection.on('disconnected', connect);
-}
+};
