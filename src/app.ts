@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
+
 app.use((req, res, next) => {
   next(createError(404));
 });

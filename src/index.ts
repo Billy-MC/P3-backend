@@ -1,10 +1,11 @@
 import app from './app';
 import connectToDB from './database/mongodb';
+import logger from './config/winston';
 
 connectToDB();
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`App is listening on ${PORT}`);
+  logger.info(`App is listening on ${PORT}`);
 });
