@@ -27,3 +27,10 @@ This README would normally document whatever steps are necessary to get your app
 
 - Repo owner or admin
 - Other community or team contact
+
+### environment
+
+NODE_ENV=development
+CONNECTION_STRING=mongodb://localhost:27017/devils-crm
+DB_NAME="CRMsystemDB"
+PORT=3000
