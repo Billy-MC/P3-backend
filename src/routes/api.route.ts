@@ -6,7 +6,7 @@ import orderRouter from './order.route';
 
 const router = express.Router();
 
-router.get('/api', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
   res.send('APIs working');
 });
 
