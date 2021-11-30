@@ -1,21 +1,11 @@
-import config from './config';
-import express from 'express';
-const app = require('./app');
+import app from './app';
+import connectToDB from './database/mongodb';
+import logger from './config/winston';
 
-async function startServer() {
-  app.use(express.json());
+connectToDB();
 
-  app
-    .listen(config.port, () => {
-      console.log(`
-      ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️
-      ################################################
-    `);
-    })
-    .on('error', err => {
-      process.exit(1);
-    });
-}
+const PORT = process.env.PORT || 3000;
 
-startServer();
+app.listen(PORT, () => {
+  logger.info(`App is listening on ${PORT}`);
+});
