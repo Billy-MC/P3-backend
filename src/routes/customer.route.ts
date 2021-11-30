@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 
 import {
   getCustomers,
@@ -8,13 +8,12 @@ import {
   createCustomer,
 } from '../controllers/customers.controller';
 
-const route = Router();
+const router = express.Router();
 
-export default (app: Router) => {
-  app.use('/customers', route);
-  route.get('/', getCustomers);
-  route.post('/', createCustomer);
-  route.put('/:id', updateCustomer);
-  route.delete('/:id', deleteCustomer);
-  route.get('/:id', getOneCustomer);
-};
+router.get('/', getCustomers);
+router.post('/', createCustomer);
+router.put('/:id', updateCustomer);
+router.delete('/:id', deleteCustomer);
+router.get('/:id', getOneCustomer);
+
+export default router;

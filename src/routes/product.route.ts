@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
   getProducts,
   getOneProduct,
@@ -7,13 +7,11 @@ import {
   createProduct,
 } from '../controllers/products.controller';
 
-const route = Router();
+const router = express.Router();
+router.get('/', getProducts);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
+router.get('/:id', getOneProduct);
 
-export default (app: Router) => {
-  app.use('/products', route);
-  route.get('/', getProducts);
-  route.post('/', createProduct);
-  route.put('/:id', updateProduct);
-  route.delete('/:id', deleteProduct);
-  route.get('/:id', getOneProduct);
-};
+export default router;
