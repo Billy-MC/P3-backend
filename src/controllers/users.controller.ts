@@ -1,6 +1,7 @@
 import { Request, Response, RequestHandler } from 'express';
 
 import User from '../models/users.model';
+import { IUser } from '../types/users.d';
 import { hashPassword } from '../utils/passwordHandler';
 import { jwtEncode } from '../utils/jwt';
 
@@ -21,13 +22,13 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
   }
   // create user
 
-  const userPassword = await hashPassword(password);
+  const encodePassword = await hashPassword(password);
   try {
-    const newUser = await User.create({
+    const newUser: IUser = await User.create({
       email,
       firstName,
       lastName,
-      password: userPassword,
+      password: encodePassword,
     });
     const token = jwtEncode({ id: newUser.userId });
     return res.status(200).json({
@@ -38,7 +39,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(403).json({ error: 'password is not approved' });
   }
 };
 
