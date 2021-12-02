@@ -2,9 +2,10 @@ import { Request, Response, RequestHandler } from 'express';
 
 import User from '../models/users.model';
 import { IUser } from '../types/users.d';
-import { hashPassword } from '../utils/passwordHandler';
+import { hashPassword, comparePassword } from '../utils/passwordHandler';
 import { jwtEncode } from '../utils/jwt';
 
+// create user
 const signUp: RequestHandler = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
 
@@ -20,7 +21,6 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       error: 'This email has already been existed!',
     });
   }
-  // create user
 
   const encodePassword = await hashPassword(password);
   try {
@@ -29,10 +29,10 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       firstName,
       lastName,
       password: encodePassword,
+      role: req.body.role,
     });
-    const token = jwtEncode({ id: newUser.userId });
+    const token = jwtEncode({ id: newUser.userId, role: newUser.role });
     return res.status(200).json({
-      status: 'Success',
       token,
       data: {
         user: newUser,
@@ -41,6 +41,33 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(403).json({ error: 'password is not approved' });
   }
+};
+
+const signIn = async (req: Request, res: Response): Promise<Response> => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send({ err: 'Please provide emaila dn password!' });
+  }
+
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) return res.status(401).send({ err: 'User is not exist!' });
+
+  const correctPassword = await comparePassword(password, user.password);
+
+  if (!correctPassword) {
+    return res.status(401).json({ err: 'Invalid email or password!' });
+  }
+
+  const token = jwtEncode({
+    id: user.userId,
+    role: user.role,
+  });
+
+  return res.status(200).json({
+    token,
+    user,
+  });
 };
 
 const getUsers = (req: Request, res: Response): void => {
@@ -59,4 +86,4 @@ const updateUser = (req: Request, res: Response) => {
   res.status(200).send('Failed');
 };
 
-export { getUsers, getOneUser, deleteUser, updateUser, signUp };
+export { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn };

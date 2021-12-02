@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 import { IUser } from '../types/users.d';
 
 const UserSchema = new Schema({
   userId: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -19,12 +19,22 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ['staff', 'admin'],
+    default: 'staff',
+  },
   password: {
     type: String,
     required: true,
     minlength: 8,
-    select: false,
   },
+});
+
+UserSchema.pre('save', async function userId(next) {
+  this.userId = await uuidv4();
+  next();
 });
 
 const User = model<IUser>('User', UserSchema);
