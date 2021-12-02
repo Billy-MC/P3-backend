@@ -1,6 +1,9 @@
 import express from 'express';
 import { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn } from '../controllers/users.controller';
+<<<<<<< HEAD
 import { authRoute, restrictTo } from '../middleware/authAccess';
+=======
+>>>>>>> 0ff61a1 (completed login & signup)
 
 const router = express.Router();
 

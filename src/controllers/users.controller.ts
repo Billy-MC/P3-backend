@@ -1,9 +1,16 @@
 import { Request, Response, RequestHandler } from 'express';
 
+<<<<<<< HEAD
 import { jwtEncode } from '@utils/jwt';
 import User from '@models/users.model';
 import { hashPassword, comparePassword } from '@utils/passwordHandler';
 import type { IUser } from '../types/users';
+=======
+import User from '../models/users.model';
+import { IUser } from '../types/users.d';
+import { hashPassword, comparePassword } from '../utils/passwordHandler';
+import { jwtEncode } from '../utils/jwt';
+>>>>>>> 0ff61a1 (completed login & signup)
 
 // create user
 const signUp: RequestHandler = async (req: Request, res: Response) => {
