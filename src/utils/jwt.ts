@@ -13,13 +13,13 @@ const jwtEncode = (id: string, role: string) => {
   return token;
 };
 
-const jwtDecode = (token: string): JwtPayload => {
+const jwtDecode = (token: string) => {
   const secret = process.env.JWT_SECRET as Secret;
   let decode;
   try {
-    decode = jwt.verify(token, secret) as JwtPayload;
+    decode = jwt.verify(token, secret);
   } catch (err) {
-    return decode as JwtPayload;
+    return decode;
   }
   return decode;
 };
