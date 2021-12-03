@@ -50,11 +50,15 @@
     "no-underscore-dangle": "off",
     "no-console": "error",
     "import/no-import-module-exports": "off",
+<<<<<<< HEAD
     "prefer-destructuring": ["error", { "object": true, "array": false }],
 <<<<<<< HEAD
     "import/no-unresolved": "off"
 =======
     "import/no-unresolved": ["2", { "ignore": [".d.ts"] }]
 >>>>>>> 4e49c7a (ignore .d)
+=======
+    "prefer-destructuring": ["error", { "object": true, "array": false }]
+>>>>>>> 18dedb3 (fix the type error)
   }
 }
