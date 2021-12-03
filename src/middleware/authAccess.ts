@@ -12,7 +12,7 @@ const authRoute = async (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     return res.status(401).json({ error: 'You are not logged in! Please login to get access' });
   }
-  const decode = jwtDecode(token) as string;
+  const decode = jwtDecode(token);
 
   const currentUser = await User.findOne({ userId: decode.id });
   if (!currentUser) {
