@@ -38,6 +38,7 @@
     "no-underscore-dangle": "off",
     "no-console": "error",
     "import/no-import-module-exports": "off",
-    "prefer-destructuring": ["error", { "object": true, "array": false }]
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "import/no-unresolved": ["2", { "ignore": [".d.ts"] }]
   }
 }
