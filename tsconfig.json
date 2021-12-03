@@ -6,7 +6,15 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
     "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@models/*": ["src/models/*"],
+      "@middleware/*": ["src/middleware/*"],
+      "@routes/*": ["src/routes/*"],
+      "@utils/*": ["src/utils/*"]
+    },
     "strict": true,
     "skipLibCheck": true,
     "typeRoots": ["src/types", "node_modules/@types"]

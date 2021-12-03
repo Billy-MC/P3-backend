@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { jwtDecode } from '../utils/jwt';
-import User from '../models/users.model';
+import User from '@models/users.model';
+import { jwtDecode } from '@utils/jwt';
 
 const authRoute = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization as string;
