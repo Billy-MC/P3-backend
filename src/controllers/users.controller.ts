@@ -31,7 +31,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       password: encodePassword,
       role: req.body.role,
     });
-    const token = jwtEncode({ id: newUser.userId, role: newUser.role });
+    const token = jwtEncode(newUser.userId, newUser.role);
     return res.status(200).json({
       token,
       data: {
@@ -59,10 +59,7 @@ const signIn = async (req: Request, res: Response): Promise<Response> => {
     return res.status(401).json({ err: 'Invalid email or password!' });
   }
 
-  const token = jwtEncode({
-    id: user.userId,
-    role: user.role,
-  });
+  const token = jwtEncode(user.userId, user.role);
 
   return res.status(200).json({
     token,

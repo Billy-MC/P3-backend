@@ -1,4 +1,5 @@
 import express from 'express';
+import { authRoute, restrictTo } from '../middleware/authAccess';
 
 import {
   getCustomers,
@@ -10,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', getCustomers);
+router.get('/', authRoute, restrictTo('admin'), getCustomers);
 router.post('/', createCustomer);
 router.put('/:id', updateCustomer);
 router.delete('/:id', deleteCustomer);
