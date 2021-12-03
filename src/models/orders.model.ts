@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import IOrder from '../types/order.d';
+import mongoose, { Schema, Model } from 'mongoose';
+import IOrder from '../types/order';
 
 const orderSchema = new Schema({
   orderId: {
@@ -18,7 +18,6 @@ const orderSchema = new Schema({
   dateCreated: {
     type: Date,
     required: true,
-    unique: true,
   },
   status: {
     type: String,
@@ -27,4 +26,4 @@ const orderSchema = new Schema({
   },
 });
 
-export default model<IOrder>('Order', orderSchema);
+export default mongoose.model<IOrder>('Order', orderSchema);

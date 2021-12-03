@@ -1,17 +1,16 @@
 import Status from '../models';
 import Document from 'mongoose';
 
-enum status_enum {
-  PENDING,
-  COMPLETED,
-  CANCELED,
+enum orderStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CANCELED = 'CANCELED',
 }
-type Status = keyof typeof status_enum;
 
 export default interface IOrder extends Document {
   orderId: string;
   customerId: string;
   products: [string];
   dateCreated: Date;
-  status: Status;
+  status: string;
 }
