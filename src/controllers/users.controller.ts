@@ -1,9 +1,9 @@
 import { Request, Response, RequestHandler } from 'express';
 
-import User from '../models/users.model';
+import { jwtEncode } from '@utils/jwt';
+import User from '@models/users.model';
+import { hashPassword, comparePassword } from '@utils/passwordHandler';
 import type { IUser } from '../types/users';
-import { hashPassword, comparePassword } from '../utils/passwordHandler';
-import { jwtEncode } from '../utils/jwt';
 
 // create user
 const signUp: RequestHandler = async (req: Request, res: Response) => {
@@ -47,7 +47,7 @@ const signIn = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({ err: 'Please provide emaila dn password!' });
+    return res.status(400).send({ err: 'Please provide email and password!' });
   }
 
   const user = await User.findOne({ email }).select('+password');
