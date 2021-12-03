@@ -1,9 +1,9 @@
 import jwt, { Secret } from 'jsonwebtoken';
 
-// export interface JwtPayload extends jwt.JwtPayload {
-//   id: string;
-//   role: string;
-// }
+export interface JwtPayload {
+  id: string;
+  role: string;
+}
 
 const jwtEncode = (id: string, role: string) => {
   const secret = process.env.JWT_SECRET as Secret;
@@ -13,13 +13,13 @@ const jwtEncode = (id: string, role: string) => {
   return token;
 };
 
-const jwtDecode = (token: string) => {
+const jwtDecode = (token: string): JwtPayload => {
   const secret = process.env.JWT_SECRET as Secret;
   let decode;
   try {
-    decode = jwt.verify(token, secret);
+    decode = jwt.verify(token, secret) as JwtPayload;
   } catch (err) {
-    return decode;
+    return decode as JwtPayload;
   }
   return decode;
 };
