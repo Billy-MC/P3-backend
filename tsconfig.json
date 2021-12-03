@@ -17,15 +17,7 @@
     },
     "strict": true,
     "skipLibCheck": true,
-<<<<<<< HEAD
-<<<<<<< HEAD
     "typeRoots": ["src/types", "node_modules/@types"]
-=======
-    "typeRoots": ["./src/types", "./node_modules/@types"]
->>>>>>> 2099b70 (auth route and premission)
-=======
-    "typeRoots": ["src/types", "node_modules/@types"]
->>>>>>> 4e49c7a (ignore .d)
   },
   "include": ["src/"]
 }
