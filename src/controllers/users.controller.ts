@@ -1,7 +1,7 @@
 import { Request, Response, RequestHandler } from 'express';
 
 import User from '../models/users.model';
-import { IUser } from '../types/users.d';
+import { IUser } from '../types/users';
 import { hashPassword, comparePassword } from '../utils/passwordHandler';
 import { jwtEncode } from '../utils/jwt';
 
