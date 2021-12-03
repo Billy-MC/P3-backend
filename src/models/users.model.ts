@@ -1,10 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-<<<<<<< HEAD
 import type { IUser } from '../types/users';
-=======
-import { IUser } from '../types/users.d';
->>>>>>> 0ff61a1 (completed login & signup)
 
 const UserSchema = new Schema({
   userId: {

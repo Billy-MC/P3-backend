@@ -51,6 +51,10 @@
     "no-console": "error",
     "import/no-import-module-exports": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
+<<<<<<< HEAD
     "import/no-unresolved": "off"
+=======
+    "import/no-unresolved": ["2", { "ignore": [".d.ts"] }]
+>>>>>>> 4e49c7a (ignore .d)
   }
 }
