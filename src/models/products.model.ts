@@ -1,8 +1,32 @@
-import mongoose from 'mongoose';
+import { stubTrue } from "lodash";
+import mongoose, { model, Schema } from "mongoose";
+import { IProduct } from "src/types/products";
 
-const { Schema } = mongoose;
 
-const productSchema = new Schema({});
+const productSchema = new Schema({
+    productId: {
+        type: Number,
+        unique: true,
+        required: true,
+        sparse: true,
+    },
+    productName: {
+        type: String,
+        required: true,
+    },
+    categoary: {
+        type: String,
+        required: true,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    description: {
+        default: '',
+        type: String,
+    },
 
-const Product = mongoose.model('Customer', productSchema);
-export default Product;
+})
+
+export default mongoose.model<IProduct>('Product', productSchema);

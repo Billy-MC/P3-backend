@@ -4,6 +4,7 @@ import customerRouter from './customer.route';
 import userRouter from './user.route';
 import orderRouter from './order.route';
 
+
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response) => {
