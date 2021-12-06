@@ -13,7 +13,10 @@
       "@models/*": ["src/models/*"],
       "@middleware/*": ["src/middleware/*"],
       "@routes/*": ["src/routes/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@config/*": ["src/config/*"],
+      "@database/*": ["src/database/*"]
     },
     "strict": true,
     "skipLibCheck": true,

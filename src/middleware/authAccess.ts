@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '@models/users.model';
-import { jwtDecode } from '@utils/jwt';
+import { jwtDecoder } from '@utils/jwt';
 
 const authRoute = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization as string;
@@ -12,9 +12,10 @@ const authRoute = async (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     return res.status(401).json({ error: 'You are not logged in! Please login to get access' });
   }
-  const decode = jwtDecode(token);
+  const decode = jwtDecoder(token);
 
   const currentUser = await User.findOne({ userId: decode.id });
+
   if (!currentUser) {
     return res.status(401).json({ error: 'The user belonging to this token does no longer exist' });
   }

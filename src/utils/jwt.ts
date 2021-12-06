@@ -5,7 +5,7 @@ interface JwtPayload {
   role: string;
 }
 
-const jwtEncode = (id: string, role: string) => {
+const jwtEncoder = (id: string, role: string) => {
   const secret = process.env.JWT_SECRET as Secret;
   const token = jwt.sign({ id, role }, secret, {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
@@ -13,7 +13,7 @@ const jwtEncode = (id: string, role: string) => {
   return token;
 };
 
-const jwtDecode = (token: string): JwtPayload => {
+const jwtDecoder = (token: string): JwtPayload => {
   const secret = process.env.JWT_SECRET as Secret;
   let decode;
   try {
@@ -23,4 +23,4 @@ const jwtDecode = (token: string): JwtPayload => {
   }
   return decode;
 };
-export { jwtEncode, jwtDecode };
+export { jwtEncoder, jwtDecoder };
