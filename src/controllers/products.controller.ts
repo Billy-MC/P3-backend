@@ -1,6 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
 import Product from '../models/products.model';
-import { v1 as uuidv1 } from 'uuid';
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   const product: Object = await Product.find().exec();
@@ -9,7 +8,6 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
 
 const getProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
-  // console.log(id);
   const product = await Product.findById(id).exec();
   if (!product) {
     return res.status(404).json({

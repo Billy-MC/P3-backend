@@ -2,7 +2,6 @@ import { stubTrue } from "lodash";
 import mongoose, { model, Schema } from "mongoose";
 import { IProduct } from "src/types/products";
 
-
 const productSchema = new Schema({
     productId: {
         type: Number,
@@ -26,7 +25,6 @@ const productSchema = new Schema({
         default: '',
         type: String,
     },
-
 })
 
 export default mongoose.model<IProduct>('Product', productSchema);
