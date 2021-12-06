@@ -1,6 +1,6 @@
 import jwt, { Secret } from 'jsonwebtoken';
 
-export interface JwtPayload {
+interface JwtPayload {
   id: string;
   role: string;
 }
