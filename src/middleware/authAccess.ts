@@ -26,7 +26,7 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 
     req.user = currentUser;
   } catch (error) {
-    return res.status(400).json(error);
+    return res.status(400).json((error as Error).message);
   }
   return next();
 };
