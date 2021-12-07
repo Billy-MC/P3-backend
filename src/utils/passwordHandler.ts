@@ -1,14 +1,14 @@
 import bcrypt from 'bcryptjs';
-import logger from '../config/winston';
+import logger from 'config/winston';
 
 const hashPassword = async (pw: string) => {
   try {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(pw, salt);
     return hashedPassword;
-  } catch (error: unknown) {
-    logger.error(error);
-    throw error;
+  } catch (error) {
+    logger.error((error as Error).message);
+    return false;
   }
 };
 
@@ -18,8 +18,8 @@ const comparePassword = async (candidatePassword: string, hashedPassword: string
       return true;
     }
     return false;
-  } catch (error: unknown) {
-    logger.error(error);
+  } catch (error) {
+    logger.error((error as Error).message);
     return false;
   }
 };
