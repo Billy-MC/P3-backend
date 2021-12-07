@@ -1,18 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '@models/users.model';
-import { jwtDecoder } from '@utils/jwt';
+import { validateToken } from '@utils/jwt';
 
 const authValidator = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization as string;
-  let token;
-  if ((authHeader && authHeader.split(' ')[0] === 'Token') || (authHeader && authHeader.split(' ')[0] === 'Bearer')) {
-    token = authHeader.split(' ')[1];
-  }
+  const authorizationHeader = req.header('Authorization') as string;
+  const tokenArray = authorizationHeader.split(' ');
+  const token = tokenArray[1];
 
-  if (!token) {
+  if (!authorizationHeader) {
     return res.status(401).json({ error: 'You are not logged in! Please login to get access' });
   }
-  const decode = jwtDecoder(token);
+
+  if (tokenArray[0] !== 'Bearer' || tokenArray.length !== 2) {
+    return res.status(401).json({ error: 'Please provide token' });
+  }
+
+  const decode = validateToken(token);
 
   const currentUser = await User.findOne({ userId: decode.id });
 
@@ -24,7 +27,7 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
   return next();
 };
 
-const restrictTo =
+const isAdmin =
   (...roles: string[]) =>
   (req: Request, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
@@ -33,4 +36,4 @@ const restrictTo =
     return next();
   };
 
-export { authValidator, restrictTo };
+export { authValidator, isAdmin };
