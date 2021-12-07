@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
 
-import { jwtEncoder } from '@utils/jwt';
+import { generateToken } from '@utils/jwt';
 import User from '@models/users.model';
 import { hashPassword, comparePassword } from '@utils/passwordHandler';
 import type { IUser } from '../types/users';
@@ -35,7 +35,8 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       role: req.body.role,
     });
 
-    const token = jwtEncoder(newUser.userId, newUser.role);
+    const token = generateToken(newUser.userId, newUser.role);
+    req.headers.authorization = `Bearer ${token}`;
 
     return res.status(201).json({
       token,
@@ -64,7 +65,8 @@ const signIn = async (req: Request, res: Response): Promise<Response> => {
     return res.status(401).json({ error: 'Invalid password!' });
   }
 
-  const token = jwtEncoder(user.userId, user.role);
+  const token = generateToken(user.userId, user.role);
+  req.headers.authorization = `Bearer ${token}`;
 
   return res.status(200).json({
     token,
