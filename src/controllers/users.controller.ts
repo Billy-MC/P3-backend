@@ -66,7 +66,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
         },
       });
   } catch (error) {
-    return res.status(403).json(error);
+    return res.status(403).json((error as Error).message);
   }
 };
 
