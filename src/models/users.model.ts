@@ -5,6 +5,7 @@ import type { IUser } from '../types/users';
 const UserSchema = new Schema({
   userId: {
     type: String,
+    unique: true,
   },
   email: {
     type: String,

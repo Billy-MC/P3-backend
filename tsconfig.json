@@ -10,17 +10,18 @@
     "baseUrl": "./",
     "paths": {
       "*": ["node_modules/*"],
-      "@models/*": ["src/models/*"],
-      "@middleware/*": ["src/middleware/*"],
-      "@routes/*": ["src/routes/*"],
-      "@utils/*": ["src/utils/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@config/*": ["src/config/*"],
-      "@database/*": ["src/database/*"]
+      "models/*": ["src/models/*"],
+      "middleware/*": ["src/middleware/*"],
+      "routes/*": ["src/routes/*"],
+      "utils/*": ["src/utils/*"],
+      "controllers/*": ["src/controllers/*"],
+      "config/*": ["src/config/*"],
+      "database/*": ["src/database/*"]
     },
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": ["src/types", "node_modules/@types"]
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
-  "include": ["src/"]
+  "include": ["src/"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

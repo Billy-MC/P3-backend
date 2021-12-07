@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '@models/users.model';
-import { validateToken } from '@utils/jwt';
+import User from 'models/users.model';
+import { validateToken } from 'utils/jwt';
 
 const authValidator = async (req: Request, res: Response, next: NextFunction) => {
   const authorizationHeader = req.header('Authorization') as string;
@@ -17,13 +17,17 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 
   const decode = validateToken(token);
 
-  const currentUser = await User.findOne({ userId: decode.id });
+  try {
+    const currentUser = await User.findOne({ userId: decode.id });
 
-  if (!currentUser) {
-    return res.status(401).json({ error: 'The user belonging to this token does no longer exist' });
+    if (!currentUser) {
+      return res.status(401).json({ error: 'The user belonging to this token does no longer exist' });
+    }
+
+    req.user = currentUser;
+  } catch (error) {
+    return res.status(400).json(error);
   }
-
-  req.user = currentUser;
   return next();
 };
 
