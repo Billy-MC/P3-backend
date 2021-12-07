@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '@models/users.model';
 import { jwtDecoder } from '@utils/jwt';
 
-const authRoute = async (req: Request, res: Response, next: NextFunction) => {
+const authValidator = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization as string;
   let token;
   if ((authHeader && authHeader.split(' ')[0] === 'Token') || (authHeader && authHeader.split(' ')[0] === 'Bearer')) {
@@ -33,4 +33,4 @@ const restrictTo =
     return next();
   };
 
-export { authRoute, restrictTo };
+export { authValidator, restrictTo };
