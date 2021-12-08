@@ -7,8 +7,11 @@ const hashPassword = async (pw: string) => {
     const hashedPassword = await bcrypt.hash(pw, salt);
     return hashedPassword;
   } catch (error) {
-    logger.error((error as Error).message);
-    return false;
+    if (error) {
+      logger.error((error as Error).message);
+      return false;
+    }
+    throw new Error('password must be provided');
   }
 };
 
@@ -19,8 +22,11 @@ const comparePassword = async (candidatePassword: string, hashedPassword: string
     }
     return false;
   } catch (error) {
-    logger.error((error as Error).message);
-    return false;
+    if (error) {
+      logger.error((error as Error).message);
+      return false;
+    }
+    throw new Error('password and hash is required to compare');
   }
 };
 
