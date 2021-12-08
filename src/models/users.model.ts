@@ -1,18 +1,44 @@
-import * as mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import type { IUser } from '../types/users';
 
-const { Schema } = mongoose;
-
-const userSchema = new Schema({
+const UserSchema = new Schema({
+  userId: {
+    type: String,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
     unique: true,
+    lowercase: true,
   },
   firstName: {
     type: String,
     required: true,
   },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ['staff', 'admin'],
+    default: 'staff',
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8,
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+UserSchema.pre('save', async function userId(next) {
+  this.userId = await uuidv4();
+  next();
+});
+
+const User = model<IUser>('User', UserSchema);
+
 export default User;

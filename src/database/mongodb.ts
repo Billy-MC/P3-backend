@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '../config/winston';
+import logger from 'config/winston';
 
 export default async () => {
   if (!process.env.CONNECTION_STRING) {
@@ -11,7 +11,7 @@ export default async () => {
   const connect = async (): Promise<void> => {
     try {
       await mongoose.connect(connectionString);
-      logger.info(`Successfully connected to database: ${process.env.DB_NAME}`);
+      logger.info(`Successfully connected to database: ${process.env.DB_NAME}, ${process.env.CONNECTION_STRING}`);
       return;
     } catch (error) {
       logger.error('Error connecting to database: ', error);
