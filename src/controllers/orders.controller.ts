@@ -1,6 +1,8 @@
-import { v1 as uuidv1 } from 'uuid';
 import { Request, RequestHandler, Response } from 'express';
 import Order from '../models/orders.model';
+import IOrder, { orderStatus } from '../types/order';
+import { v1 as uuidv1 } from 'uuid';
+const Joi = require('joi');
 
 const createOrder: RequestHandler = async (req: Request, res: Response) => {
   const { customerId, products } = req.body;
