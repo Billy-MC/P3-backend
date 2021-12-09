@@ -1,5 +1,5 @@
-import mongoose, { Schema, Model } from 'mongoose';
-import IOrder from '../types/order';
+import mongoose, { Schema } from 'mongoose';
+import IOrder from '../types/order.d';
 
 const orderSchema = new Schema({
   orderId: {

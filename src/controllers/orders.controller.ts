@@ -1,8 +1,6 @@
+import { v1 as uuidv1 } from 'uuid';
 import { Request, RequestHandler, Response } from 'express';
 import Order from '../models/orders.model';
-import IOrder, { orderStatus } from '../types/order';
-import { v1 as uuidv1 } from 'uuid';
-const Joi = require('joi');
 
 const createOrder: RequestHandler = async (req: Request, res: Response) => {
   const { customerId, products } = req.body;
@@ -24,12 +22,11 @@ const createOrder: RequestHandler = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(406).json({ error: `{error.message}` });
   }
-
   return res.status(201).json(order);
 };
 
 const getAllOrders: RequestHandler = async (req: Request, res: Response) => {
-  const orders: Object = await Order.find().exec();
+  const orders = await Order.find().exec();
   return res.json(orders);
 };
 
