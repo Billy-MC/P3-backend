@@ -1,7 +1,6 @@
 import { Request, RequestHandler, Response } from 'express';
 import Order from '../models/orders.model';
-import IOrder, { orderStatus } from '../types/order';
-import { v1 as uuidv1 } from 'uuid';
+import IOrder from '../types/order';
 const Joi = require('joi');
 
 const createOrder: RequestHandler = async (req: Request, res: Response) => {
@@ -9,22 +8,20 @@ const createOrder: RequestHandler = async (req: Request, res: Response) => {
   if (!customerId || !products) {
     return res.status(400).json({ error: 'input fields cannot be empty.' });
   }
-  const orderId: string = uuidv1();
-  const dateCreated: Date = new Date();
-  const order = new Order({
-    orderId,
-    customerId,
-    products,
-    dateCreated,
-    status: 'PENDING',
-  });
 
   try {
-    await order.save();
+    const dateCreated: Date = new Date();
+    const order: IOrder = await Order.create({
+      customerId,
+      products,
+      dateCreated,
+      status: 'PENDING',
+    });
+
+    return res.status(201).json(order);
   } catch (error) {
-    return res.status(406).json({ error: `{error.message}` });
+    return res.status(403).json((error as Error).message);
   }
-  return res.status(201).json(order);
 };
 
 const getAllOrders: RequestHandler = async (req: Request, res: Response) => {

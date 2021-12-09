@@ -1,4 +1,3 @@
-import Status from '../models';
 import Document from 'mongoose';
 
 enum orderStatus {
