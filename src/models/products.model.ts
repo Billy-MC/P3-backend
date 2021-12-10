@@ -1,12 +1,14 @@
-import { stubTrue } from "lodash";
 import mongoose, { model, Schema } from "mongoose";
 import { IProduct } from "src/types/products";
+import { v4 as uuidv4 } from "uuid";
 
 const productSchema = new Schema({
     productId: {
-        type: Number,
+        type: String,
+        default: function genUUID(){
+            return uuidv4();
+        },
         unique: true,
-        required: true,
         sparse: true,
     },
     productName: {

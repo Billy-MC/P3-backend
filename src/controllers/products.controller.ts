@@ -3,21 +3,27 @@ import Product from '../models/products.model';
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   const product: Object = await Product.find().exec();
-  return res.json(product);
+  return res.status(200).json(product);
 }
 
 const getProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { productId } = req.body;
+  if(!productId) {
+    return res.status(404).json({
+      error: " product id can not be empty ! "
+    })
+  }
   const product = await Product.findById(id).exec();
   if (!product) {
     return res.status(404).json({
-      error: "product not found !"
+      error: "product can not found !"
     })
   }
-  return res.json(product);
+  return res.status(200).json(product);
 }
 
-const addProducts: RequestHandler = async (req: Request, res: Response) => {
+const addProduct: RequestHandler = async (req: Request, res: Response) => {
   const {
     productId,
     productName,
@@ -25,6 +31,11 @@ const addProducts: RequestHandler = async (req: Request, res: Response) => {
     quantity,
     description,
   } = req.body;
+  if(!productName || !categoary || !quantity) {
+    return res.status(404).json({
+      error: " Input field must not be empty ! "
+    })
+  }
   const product = new Product({
     productId,
     productName,
@@ -34,7 +45,7 @@ const addProducts: RequestHandler = async (req: Request, res: Response) => {
   })
 
   await product.save();
-  return res.status(201).json(product);
+  return res.status(200).json(product);
 }
 
 const updateProductById: RequestHandler = async (req: Request, res: Response) => {
@@ -46,6 +57,11 @@ const updateProductById: RequestHandler = async (req: Request, res: Response) =>
     quantity,
     description,
   } = req.body;
+  if(!productName || !categoary || !quantity) {
+    return res.status(404).json({
+      error: " Input field must not be empty ! "
+    })
+  }
   const product = await Product.findByIdAndUpdate(id, {
     productId,
     productName,
@@ -58,26 +74,28 @@ const updateProductById: RequestHandler = async (req: Request, res: Response) =>
       error: "product not found !"
     })
   }
-  return res.json(product);
+  return res.status(200).json(product);
 }
 
 const deleteProductById: RequestHandler = async (req: Request, res: Response) => {
   const {
     id
   } = req.params;
-  const product = await Product.findOneAndDelete().exec();
+  const product = await Product.findOneAndDelete({productId:id}).exec();
   if (!product) {
     return res.status(404).json({
       error: "product not found "
     })
   }
-  return res.sendStatus(204);
+  return res.status(204).json({
+    message : " Successfully deleted "
+  })
 }
 
 export {
   getAllProducts,
   getProductById,
-  addProducts,
+  addProduct,
   updateProductById,
   deleteProductById,
 };
