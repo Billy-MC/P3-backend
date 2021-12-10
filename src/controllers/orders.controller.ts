@@ -26,7 +26,7 @@ const createOrder: RequestHandler = async (req: Request, res: Response) => {
 
 const getAllOrders: RequestHandler = async (req: Request, res: Response) => {
   const orders = await Order.find().exec();
-  return res.json(orders);
+  return res.status(200).json(orders);
 };
 
 const getOrderbyId: RequestHandler = async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ const getOrderbyId: RequestHandler = async (req: Request, res: Response) => {
   if (!order) {
     return res.status(404).json({ error: 'order not found' });
   }
-  return res.json(order);
+  return res.status(200).json(order);
 };
 
 const deleteOrderById: RequestHandler = async (req: Request, res: Response) => {
@@ -57,7 +57,7 @@ const updateOrderById: RequestHandler = async (req: Request, res: Response) => {
   if (!order) {
     return res.status(404).json({ error: 'order not found.' });
   }
-  return res.json(order);
+  return res.status(200).json(order);
 };
 
 export { getAllOrders, getOrderbyId, deleteOrderById, updateOrderById, createOrder };
