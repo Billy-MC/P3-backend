@@ -29,7 +29,7 @@ const getAllOrders: RequestHandler = async (req: Request, res: Response) => {
   return res.status(200).json(orders);
 };
 
-const getOrderbyId: RequestHandler = async (req: Request, res: Response) => {
+const getOrderById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
   const order = await Order.findOne({ orderId: id });
   if (!order) {
@@ -60,4 +60,4 @@ const updateOrderById: RequestHandler = async (req: Request, res: Response) => {
   return res.status(200).json(order);
 };
 
-export { getAllOrders, getOrderbyId, deleteOrderById, updateOrderById, createOrder };
+export { getAllOrders, getOrderById, deleteOrderById, updateOrderById, createOrder };
