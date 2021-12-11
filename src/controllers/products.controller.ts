@@ -5,7 +5,7 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   const product: Object = await Product.find().exec();
   return res.status(200).json(product);
 }
-
+// test
 const getProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { productId } = req.body;
