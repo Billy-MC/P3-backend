@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import Product from '../models/products.model';
+import Product from 'models/products.model';
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   const product: Object = await Product.find().exec();
