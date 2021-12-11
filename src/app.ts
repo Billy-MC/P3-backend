@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
-app.use('/api', productRouter);
+
 app.use(error404);
 
 // error handler
