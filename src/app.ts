@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import { HttpError } from 'http-errors';
 import express, { Request, Response } from 'express';
+import 'express-async-errors';
 import morgan from 'morgan';
 import cors from 'cors';
-import apiRouter from './routes/api.route';
-import indexRouter from './routes/index.route';
-import error404 from './middleware/error-404';
-import productRouter from './routes/product.route';
+import apiRouter from 'routes/api.route';
+import indexRouter from 'routes/index.route';
+import error404 from 'middleware/error-404';
 
 const app = express();
 

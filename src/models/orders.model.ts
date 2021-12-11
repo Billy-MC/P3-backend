@@ -1,8 +1,35 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
+import IOrder from '../types/order';
 
-const { Schema } = mongoose;
+const orderSchema = new Schema({
+  orderId: {
+    type: String,
+    unique: true,
+  },
+  customerId: {
+    type: String,
+    required: true,
+  },
+  products: {
+    type: [String],
+    required: true,
+  },
+  dateCreated: {
+    type: Date,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['PENDING', 'COMPLETED', 'CANCELED'],
+    required: true,
+  },
+});
 
-const orderSchema = new Schema({});
+orderSchema.pre('save', async function orderId(next) {
+  const now: number = await new Date().getTime();
+  this.orderId = await `OR-${now}`;
+  next();
+});
+const Order = model<IOrder>('Order', orderSchema);
 
-const Order = mongoose.model('Order', orderSchema);
 export default Order;

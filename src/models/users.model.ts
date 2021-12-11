@@ -1,38 +1,44 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import type { IUser } from '../types/users';
 
-export enum Gender {
-  male = 'male',
-  female = 'female',
-  undisclosed = 'undisclosed'
-}
-
-export interface Address extends Document {
-  street: string;
-  city: string;
-  postCode: string;
-}
-
-export interface IUser extends Document {
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender?: Gender;
-  address?: Address;
-}
-
-const UserSchema: Schema = new Schema({
-  email: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  // Gets the Mongoose enum from the TypeScript enum
-  gender: { type: String, enum: Object.values(Gender) },
-  address: {
-    street: { type: String },
-    city: { type: String },
-    postCode: { type: String }
-  }
+const UserSchema = new Schema({
+  userId: {
+    type: String,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ['staff', 'admin'],
+    default: 'staff',
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8,
+  },
 });
 
-const User = mongoose.model<IUser>('User', UserSchema);
-// Export the model and return your IUser interface
+UserSchema.pre('save', async function userId(next) {
+  this.userId = await uuidv4();
+  next();
+});
+
+const User = model<IUser>('User', UserSchema);
+
 export default User;

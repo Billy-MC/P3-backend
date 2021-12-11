@@ -1,23 +1,63 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
+import Order from '../models/orders.model';
+import IOrder from '../types/order';
+const Joi = require('joi');
 
-const getOrders = (req: Request, res: Response): void => {
-  res.status(200).send('Get the Orders');
+const createOrder: RequestHandler = async (req: Request, res: Response) => {
+  const { customerId, products } = req.body;
+  if (!customerId || !products) {
+    return res.status(400).json({ error: 'input fields cannot be empty.' });
+  }
+
+  try {
+    const dateCreated: Date = new Date();
+    const order: IOrder = await Order.create({
+      customerId,
+      products,
+      dateCreated,
+      status: 'PENDING',
+    });
+
+    return res.status(201).json(order);
+  } catch (error) {
+    return res.status(403).json((error as Error).message);
+  }
 };
 
-const getOneOrder = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const getAllOrders: RequestHandler = async (req: Request, res: Response) => {
+  const orders = await Order.find().exec();
+  return res.status(200).json(orders);
 };
 
-const deleteOrder = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const getOrderById: RequestHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const order = await Order.findOne({ orderId: id });
+  if (!order) {
+    return res.status(404).json({ error: 'order not found' });
+  }
+  return res.status(200).json(order);
 };
 
-const updateOrder = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const deleteOrderById: RequestHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const order = await Order.findOneAndDelete({ orderId: id });
+  if (!order) {
+    return res.status(404).json({ error: 'order not found' });
+  }
+  return res.status(200).json(order);
 };
 
-const createOrder = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const updateOrderById: RequestHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { customerId, products, status } = req.body;
+  if (!customerId || !products || !status) {
+    return res.status(400).json({ error: 'input fields cannot be empty.' });
+  }
+  const order = await Order.findOneAndUpdate({ orderId: id }, { customerId, products, status }, { new: true }).exec();
+  if (!order) {
+    return res.status(404).json({ error: 'order not found.' });
+  }
+  return res.status(200).json(order);
 };
 
-export { getOrders, getOneOrder, deleteOrder, updateOrder, createOrder };
+export { getAllOrders, getOrderById, deleteOrderById, updateOrderById, createOrder };
