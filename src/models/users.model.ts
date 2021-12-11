@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
     lowercase: true,
+    index: true,
   },
   firstName: {
     type: String,
@@ -38,6 +39,13 @@ UserSchema.pre('save', async function userId(next) {
   this.userId = await uuidv4();
   next();
 });
+
+UserSchema.methods.toJSON = function delPassword() {
+  const obj = this.toObject();
+  delete obj.password;
+  delete obj.__v;
+  return obj;
+};
 
 const User = model<IUser>('User', UserSchema);
 
