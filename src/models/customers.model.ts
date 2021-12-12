@@ -12,6 +12,7 @@ const CustomerSchema = new Schema({
     required: true,
     lowercase: true,
     index: true,
+    unique: true,
   },
   firstName: {
     type: String,
