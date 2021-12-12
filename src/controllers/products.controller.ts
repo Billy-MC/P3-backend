@@ -1,71 +1,72 @@
 import { Request, RequestHandler, Response } from 'express';
 import Product from 'models/products.model';
+import { IProduct } from '../types/products';
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
-  const product: Object = await Product.find().exec();
-  return res.status(200).json(product);
+  try{
+    const product = await Product.find().exec();
+    return res.status(200).json(product);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 }
-// test
+
 const getProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { productId } = req.body;
-  if(!productId) {
-    return res.status(404).json({
-      error: " product id can not be empty ! "
-    })
-  }
-  const product = await Product.findById(id).exec();
-  if (!product) {
+  const productById = await Product.findOne({
+    productId: String(id)
+  });
+  if (!productById) {
     return res.status(404).json({
       error: "product can not found !"
     })
   }
-  return res.status(200).json(product);
+  return res.status(200).json(productById);
 }
 
 const addProduct: RequestHandler = async (req: Request, res: Response) => {
   const {
     productId,
     productName,
-    categoary,
+    category,
+    price,
     quantity,
     description,
   } = req.body;
-  if(!productName || !categoary || !quantity) {
+  if(!productName || !category || !quantity || !price) {
     return res.status(404).json({
       error: " Input field must not be empty ! "
     })
   }
-  const product = new Product({
+  const product: IProduct = await Product.create({
     productId,
     productName,
-    categoary,
+    category,
+    price,
     quantity,
     description,
   })
-
-  await product.save();
   return res.status(200).json(product);
 }
 
 const updateProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
   const {
-    productId,
     productName,
-    categoary,
+    category,
     quantity,
+    price,
     description,
   } = req.body;
-  if(!productName || !categoary || !quantity) {
+  if(!productName || !category || !quantity || !price) {
     return res.status(404).json({
       error: " Input field must not be empty ! "
     })
   }
-  const product = await Product.findByIdAndUpdate(id, {
-    productId,
+  const product = await Product.findOneAndUpdate({ productId: String(id)}, {
     productName,
-    categoary,
+    category,
+    price,
     quantity,
     description,
   }, { new: true }).exec();
@@ -81,7 +82,7 @@ const deleteProductById: RequestHandler = async (req: Request, res: Response) =>
   const {
     id
   } = req.params;
-  const product = await Product.findOneAndDelete({productId:id}).exec();
+  const product = await Product.findOneAndDelete({productId:String(id)}).exec();
   if (!product) {
     return res.status(404).json({
       error: "product not found "
@@ -98,4 +99,4 @@ export {
   addProduct,
   updateProductById,
   deleteProductById,
-};
+}

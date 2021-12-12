@@ -1,10 +1,9 @@
-export interface IProduct { }
-import { Document } from "mongoose";
-
-export default interface Iproduct extends Document {
-    productId: Number;
+export interface IProduct {
+    productId: String;
     productName: String;
-    categoary: String;
+    category: String;
+    price: Number,
     quantity: Number;
-    description: "";
+    description: String;
 }
+

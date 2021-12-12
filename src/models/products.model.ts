@@ -5,19 +5,21 @@ import { v4 as uuidv4 } from "uuid";
 const productSchema = new Schema({
     productId: {
         type: String,
-        default: function genUUID(){
-            return uuidv4();
-        },
         unique: true,
-        sparse: true,
     },
     productName: {
         type: String,
         required: true,
     },
-    categoary: {
+    category: {
         type: String,
         required: true,
+        enum: ['computers', 'phones', 'accesories'],
+    },
+    price: {
+        type: Number, 
+        default: 0,
+        required: true, 
     },
     quantity: {
         type: Number,
@@ -28,5 +30,10 @@ const productSchema = new Schema({
         type: String,
     },
 })
+
+productSchema.pre('save', async function productId(next) {
+    this.productId = await uuidv4();
+    next();
+});
 
 export default mongoose.model<IProduct>('Product', productSchema);
