@@ -2,19 +2,19 @@ import express from 'express';
 import { authValidator, isAdmin } from '@middleware/authAccess';
 
 import {
-  getCustomers,
-  getOneCustomer,
-  deleteCustomer,
-  updateCustomer,
-  createCustomer,
+  getAllCustomers,
+  getCustomerById,
+  deleteCustomerById,
+  updateCustomerById,
+  createNewCustomer,
 } from '@controllers/customers.controller';
 
 const router = express.Router();
 
-router.get('/', authValidator, isAdmin('admin'), getCustomers);
-router.post('/', createCustomer);
-router.put('/:id', updateCustomer);
-router.delete('/:id', deleteCustomer);
-router.get('/:id', getOneCustomer);
+router.get('/', authValidator, isAdmin('admin'), getAllCustomers);
+router.post('/', createNewCustomer);
+router.put('/:id', updateCustomerById);
+router.delete('/:id', deleteCustomerById);
+router.get('/:id', getCustomerById);
 
 export default router;
