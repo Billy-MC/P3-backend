@@ -53,29 +53,34 @@ const updateCustomerById: RequestHandler = async (req: Request, res: Response) =
     firstName,
     lastName,
     phone,
-    DOB,
+    dob,
     notification,
     gender,
     address
   } = req.body;
-  const customer = await Customer.findOneAndUpdate(
-    { customerId: id },
-    {
-      email,
-      firstName,
-      lastName,
-      phone,
-      DOB,
-      notification,
-      gender,
-      address
-    },
-    { new: true }
-  ).exec();
-  if (!customer) {
-    return res.status(404).json({ error: 'customer not found.' });
+  if (gender === "male" || gender === "female" || gender === "undisclosed"
+    || gender === null || gender === undefined || gender === "") {
+    const customer = await Customer.findOneAndUpdate(
+      { customerId: id },
+      {
+        email,
+        firstName,
+        lastName,
+        phone,
+        dob,
+        notification,
+        gender,
+        address
+      },
+      { new: true }
+    ).exec();
+    if (!customer) {
+      return res.status(404).json({ error: 'customer not found.' });
+    }
+    return res.status(200).json(customer);
+  } else {
+    return res.status(404).json({ error: 'please enter male or female or undisclosed in gender or you can skip the gender option' });
   }
-  return res.status(200).json(customer);
 };
 
 const createNewCustomer: RequestHandler = async (req: Request, res: Response) => {
