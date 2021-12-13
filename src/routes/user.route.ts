@@ -1,6 +1,6 @@
 import express from 'express';
-import { authValidator, isAdmin } from 'middleware/authAccess';
-import { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn } from 'controllers/users.controller';
+import { authValidator, isAdmin } from '@middleware/authAccess';
+import { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn } from '@controllers/users.controller';
 
 const router = express.Router();
 

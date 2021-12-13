@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import logger from 'config/winston';
+import logger from '@config/winston';
 
 const hashPassword = async (pw: string) => {
   try {

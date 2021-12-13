@@ -1,5 +1,5 @@
 import express from 'express';
-import { authValidator, isAdmin } from '../middleware/authAccess';
+import { authValidator, isAdmin } from '@middleware/authAccess';
 
 import {
   getCustomers,
@@ -7,7 +7,7 @@ import {
   deleteCustomer,
   updateCustomer,
   createCustomer,
-} from '../controllers/customers.controller';
+} from '@controllers/customers.controller';
 
 const router = express.Router();
 

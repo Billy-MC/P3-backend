@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import Order from '../models/orders.model';
+import Order from '@models/orders.model';
 import IOrder from '../types/order';
 const Joi = require('joi');
 

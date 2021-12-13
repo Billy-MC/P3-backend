@@ -1,8 +1,8 @@
 import { Request, Response, RequestHandler } from 'express';
-import { generateToken } from 'utils/jwt';
-import User from 'models/users.model';
-import { hashPassword, comparePassword } from 'utils/passwordHandler';
-import { validateEmail, validatePassword } from 'utils/validator';
+import { generateToken } from '@utils/jwt';
+import User from '@models/users.model';
+import { hashPassword, comparePassword } from '@utils/passwordHandler';
+import { validateEmail, validatePassword } from '@utils/validator';
 import type { IUser } from '../types/users';
 
 // create user
