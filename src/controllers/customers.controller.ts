@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from 'express';
-import Customer from '../models/customers.model';
+import Customer from 'models/customers.model';
 import { ICustomer } from '../types/customer';
 
 const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
