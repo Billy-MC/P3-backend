@@ -12,7 +12,7 @@ export interface ICustomer extends Document {
     firstName: string;
     lastName: string;
     phone: string;
-    DOB: Date;
+    dob: Date;
     notification?: Notification;
     gender: Gender;
     address: Address;

@@ -26,7 +26,7 @@ const CustomerSchema = new Schema({
     type: String,
     required: true,
   },
-  DOB: {
+  dob: {
     type: Date,
     required: true,
   },
