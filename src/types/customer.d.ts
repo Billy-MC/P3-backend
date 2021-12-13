@@ -1,7 +1,7 @@
 import Document from 'mongoose';
 
 interface Address extends Document {
-    street: string;
+    street?: string;
     city: string;
     postCode: string;
 }
@@ -13,7 +13,7 @@ export interface ICustomer extends Document {
     lastName: string;
     phone: string;
     DOB: Date;
-    notification: Notification;
+    notification?: Notification;
     gender: Gender;
     address: Address;
 }
