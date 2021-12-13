@@ -84,30 +84,35 @@ const updateCustomerById: RequestHandler = async (req: Request, res: Response) =
 };
 
 const createNewCustomer: RequestHandler = async (req: Request, res: Response) => {
-  try {
-    const {
-      email,
-      firstName,
-      lastName,
-      phone,
-      DOB,
-      notification,
-      gender,
-      address
-    } = req.body;
-    const customer: ICustomer = await Customer.create({
-      email,
-      firstName,
-      lastName,
-      phone,
-      DOB,
-      notification,
-      gender,
-      address
-    });
-    res.status(201).json(customer);
-  } catch (e) {
-    res.status(400).json({ error: e.message });
+  const {
+    email,
+    firstName,
+    lastName,
+    phone,
+    dob,
+    notification,
+    gender,
+    address
+  } = req.body;
+  if (gender === "male" || gender === "female" || gender === "undisclosed"
+    || gender === null || gender === undefined || gender === "") {
+    try {
+      const customer: ICustomer = await Customer.create({
+        email,
+        firstName,
+        lastName,
+        phone,
+        dob,
+        notification,
+        gender,
+        address
+      });
+      res.status(201).json(customer);
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  } else {
+    return res.status(404).json({ error: 'please enter male or female or undisclosed in gender or you can skip the gender option' });
   }
 };
 
