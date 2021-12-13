@@ -2,7 +2,7 @@ import express from 'express';
 import {
   getAllProducts,
   getProductById,
-  addProduct,
+  createProduct,
   updateProductById,
   deleteProductById,
 } from 'controllers/products.controller';
@@ -10,7 +10,7 @@ import {
 const productRouter = express.Router();
 
 productRouter.get('', getAllProducts);
-productRouter.post('', addProduct);
+productRouter.post('', createProduct);
 productRouter.put('/:id', updateProductById);
 productRouter.delete('/:id', deleteProductById);
 productRouter.get('/:id', getProductById);

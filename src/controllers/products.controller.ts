@@ -1,6 +1,8 @@
 import { Request, RequestHandler, Response } from 'express';
-import Product from 'models/products.model';
+import Product from '@models/products.model';
 import { IProduct } from '../types/products';
+import  { isEmpty } from 'lodash';
+
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   try{
@@ -13,6 +15,11 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
 
 const getProductById: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
+  if(isEmpty(id)){
+    return res.status(404).json({
+      error: "ID can not found !"
+    })
+  }
   const productById = await Product.findOne({
     productId: String(id)
   });
@@ -24,7 +31,7 @@ const getProductById: RequestHandler = async (req: Request, res: Response) => {
   return res.status(200).json(productById);
 }
 
-const addProduct: RequestHandler = async (req: Request, res: Response) => {
+const createProduct: RequestHandler = async (req: Request, res: Response) => {
   const {
     productId,
     productName,
@@ -96,7 +103,7 @@ const deleteProductById: RequestHandler = async (req: Request, res: Response) =>
 export {
   getAllProducts,
   getProductById,
-  addProduct,
+  createProduct,
   updateProductById,
   deleteProductById,
 }
