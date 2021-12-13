@@ -6,13 +6,13 @@ import {
   getCustomerById,
   deleteCustomerById,
   updateCustomerById,
-  addNewCustomer,
-} from '../controllers/customers.controller';
+  createNewCustomer,
+} from '@controllers/customers.controller';
 
 const router = express.Router();
 
 router.get('/', authValidator, isAdmin('admin'), getAllCustomers);
-router.post('/', addNewCustomer);
+router.post('/', createNewCustomer);
 router.put('/:id', updateCustomerById);
 router.delete('/:id', deleteCustomerById);
 router.get('/:id', getCustomerById);

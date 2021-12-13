@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from 'express';
-import Customer from 'models/customers.model';
+import Customer from '@models/customers.model';
 import { ICustomer } from '../types/customer';
 
 const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
@@ -83,7 +83,7 @@ const updateCustomerById: RequestHandler = async (req: Request, res: Response) =
   }
 };
 
-const addNewCustomer: RequestHandler = async (req: Request, res: Response) => {
+const createNewCustomer: RequestHandler = async (req: Request, res: Response) => {
   const {
     email,
     firstName,
@@ -116,4 +116,4 @@ const addNewCustomer: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllCustomers, getCustomerById, deleteCustomerById, updateCustomerById, addNewCustomer };
+export { getAllCustomers, getCustomerById, deleteCustomerById, updateCustomerById, createNewCustomer };
