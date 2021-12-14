@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import User from 'models/users.model';
-import { validateToken } from 'utils/jwt';
+import User from '@models/users.model';
+import { validateToken } from '@utils/jwt';
 
 const authValidator = async (req: Request, res: Response, next: NextFunction) => {
   const authorizationHeader = req.header('Authorization') as string;

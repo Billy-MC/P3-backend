@@ -1,5 +1,5 @@
-import connectToDB from 'database/mongodb';
-import logger from 'config/winston';
+import connectToDB from '@database/mongodb';
+import logger from '@config/winston';
 import app from './app';
 
 connectToDB();
