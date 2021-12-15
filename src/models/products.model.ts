@@ -1,8 +1,39 @@
-import mongoose from 'mongoose';
+import mongoose, { model, Schema } from "mongoose";
+import type{ IProduct } from "../types/products";
+import { v4 as uuidv4 } from "uuid";
 
-const { Schema } = mongoose;
+const productSchema = new Schema({
+    productId: {
+        type: String,
+        unique: true,
+    },
+    productName: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+        enum: ['computers', 'phones', 'accesories'],
+    },
+    price: {
+        type: Number, 
+        default: 0,
+        required: true, 
+    },
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    description: {
+        default: '',
+        type: String,
+    },
+})
 
-const productSchema = new Schema({});
+productSchema.pre('save', async function productId(next) {
+    this.productId = await uuidv4();
+    next();
+});
 
-const Product = mongoose.model('Customer', productSchema);
-export default Product;
+export default mongoose.model<IProduct>('Product', productSchema);
