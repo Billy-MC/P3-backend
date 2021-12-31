@@ -16,5 +16,4 @@ router.post('/', createNewCustomer);
 router.put('/:id', updateCustomerById);
 router.delete('/:id', deleteCustomerById);
 router.get('/:id', getCustomerById);
-console.log("testing");
 export default router;
