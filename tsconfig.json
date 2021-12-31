@@ -10,7 +10,6 @@
     "baseUrl": "./",
     "paths": {
       "*": ["node_modules/*", "src/types/*"],
-      "@types/*": ["src/types/*"],
       "@models/*": ["src/models/*"],
       "@middleware/*": ["src/middleware/*"],
       "@routes/*": ["src/routes/*"],
@@ -23,7 +22,7 @@
     "skipLibCheck": true,
     "typeRoots": ["./src/types", "./node_modules/@types"]
   },
-  "typeRoots": ["./src/@types", "./custom_typings", "./@types", "./node_modules/@types"],
   "include": ["./src"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts"],
+  "files": ["./src/types/types.d.ts"]
 }

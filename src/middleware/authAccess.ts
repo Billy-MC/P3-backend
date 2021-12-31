@@ -17,8 +17,9 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 
   const decode = validateToken(token);
 
-  const currentUser = await User.findOne({ userId: decode.id });
   try {
+    const currentUser = await User.findOne({ userId: decode.id });
+
     if (!currentUser) {
       return res.status(401).json({ error: 'The user belonging to this token does no longer exist' });
     }
