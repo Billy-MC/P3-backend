@@ -28,12 +28,24 @@ This README would normally document whatever steps are necessary to get your app
 - Repo owner or admin
 - Other community or team contact
 
-### environment
+# Getting started
 
-NODE_ENV=development
-CONNECTION_STRING=mongodb://localhost:27017/devils-crm
-DB_NAME="CRMsystemDB"
-PORT=3000
+- Clone the repository
 
-JWT_SECRET=KIMMINJUIZONEMAYAWAKISAKURAWIZONE
-JWT_EXPIRES_IN=1d
+```
+git clone https://billychui@bitbucket.org/devilscrm/devils-crm-backend.git <project_name>
+```
+
+- Install dependencies
+
+```
+cd <project_name>
+npm install
+```
+
+- Build and run the project
+
+```
+npm run build
+npm start
+```
