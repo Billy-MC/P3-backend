@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import type { IProduct } from '../types/products';
+import type { IProduct } from 'products';
 
 const productSchema = new Schema({
   productId: {

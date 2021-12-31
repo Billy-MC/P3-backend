@@ -43,9 +43,9 @@ cd <project_name>
 npm install
 ```
 
-- Build and run the project
+- Build the project
 
 ```
 npm run build
-npm start
+
 ```
