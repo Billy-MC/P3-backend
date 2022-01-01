@@ -10,7 +10,6 @@
     "baseUrl": "./",
     "paths": {
       "*": ["node_modules/*", "src/types/*"],
-      "@types/*": ["src/types/*"],
       "@models/*": ["src/models/*"],
       "@middleware/*": ["src/middleware/*"],
       "@routes/*": ["src/routes/*"],

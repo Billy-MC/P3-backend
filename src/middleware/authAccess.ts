@@ -17,13 +17,14 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 
   const decode = validateToken(token);
 
-  const currentUser = await User.findOne({ userId: decode.id });
   try {
+    const currentUser = await User.findOne({ userId: decode.id });
+
     if (!currentUser) {
       return res.status(401).json({ error: 'The user belonging to this token does no longer exist' });
     }
 
-    req.user = currentUser;
+    req.body.user = currentUser;
   } catch (error) {
     return res.status(400).json((error as Error).message);
   }
@@ -33,7 +34,7 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 const isAdmin =
   (...roles: string[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.body.user.role)) {
       return res.status(403).json({ error: 'You do not have permission to perform this action' });
     }
     return next();
