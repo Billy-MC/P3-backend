@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const { Schema } = mongoose;
+import { Schema, model } from 'mongoose';
 
 const customerSchema = new Schema({
   email: {
@@ -33,5 +31,5 @@ const customerSchema = new Schema({
   },
 });
 
-const Customer = mongoose.model('Customer', customerSchema);
+const Customer = model('Customer', customerSchema);
 export default Customer;

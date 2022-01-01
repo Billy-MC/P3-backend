@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import type { IProduct } from 'products';
+import { IProduct } from 'products';
 
 const productSchema = new Schema({
   productId: {
@@ -36,4 +36,4 @@ productSchema.pre('save', async function productId(next) {
   next();
 });
 
-export default mongoose.model<IProduct>('Product', productSchema);
+export default model<IProduct>('Product', productSchema);
