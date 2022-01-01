@@ -10,6 +10,7 @@ To build and run this app locally you will need a few things:
 - Install [MongoDB](https://docs.mongodb.com/manual/installation/)
 - Install [VS Code](https://code.visualstudio.com/)
 - Create .env in the project root folder
+- Copy environment variable into .env
 
 ### What is this repository for?
 
