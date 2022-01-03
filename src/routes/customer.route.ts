@@ -1,5 +1,4 @@
 import express from 'express';
-import { authValidator, isAdmin } from '@middleware/authAccess';
 
 import {
   getAllCustomers,
@@ -11,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', authValidator, isAdmin('admin'), getAllCustomers);
+router.get('/', getAllCustomers);
 router.post('/', createNewCustomer);
 router.put('/:id', updateCustomerById);
 router.delete('/:id', deleteCustomerById);
