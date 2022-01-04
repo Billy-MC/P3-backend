@@ -11,5 +11,5 @@ export default interface IOrder extends Document {
   customerId: string;
   products: [string];
   dateCreated: Date;
-  status: string;
+  status: orderStatus;
 }

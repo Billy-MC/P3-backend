@@ -1,7 +1,6 @@
 import { Request, RequestHandler, Response } from 'express';
 import Order from '@models/orders.model';
 import IOrder from '../types/order';
-const Joi = require('joi');
 
 const createOrder: RequestHandler = async (req: Request, res: Response) => {
   const { customerId, products } = req.body;

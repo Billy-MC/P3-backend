@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const { Schema } = mongoose;
+import { Schema, model } from 'mongoose';
 
 const customerSchema = new Schema({
   email: {
@@ -20,18 +18,18 @@ const customerSchema = new Schema({
   },
   notification: {
     type: [String],
-    enum: ['SMS', 'phone', 'email']
+    enum: ['SMS', 'phone', 'email'],
   },
   gender: {
     type: String,
-    enum: ['male', 'female', 'undisclosed']
+    enum: ['male', 'female', 'undisclosed'],
   },
   address: {
     street: { type: String },
     city: { type: String },
-    postCode: { type: String }
-  }
+    postCode: { type: String },
+  },
 });
 
-const Customer = mongoose.model('Customer', customerSchema);
+const Customer = model('Customer', customerSchema);
 export default Customer;

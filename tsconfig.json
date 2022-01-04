@@ -9,7 +9,7 @@
     "types": ["node"],
     "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/*"],
+      "*": ["node_modules/*", "src/types/*"],
       "@models/*": ["src/models/*"],
       "@middleware/*": ["src/middleware/*"],
       "@routes/*": ["src/routes/*"],
@@ -22,6 +22,6 @@
     "skipLibCheck": true,
     "typeRoots": ["./src/types", "./node_modules/@types"]
   },
-  "include": ["src/"],
+  "include": ["./src"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
