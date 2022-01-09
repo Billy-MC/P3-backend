@@ -3,6 +3,7 @@ import Document from 'mongoose';
 interface Address extends Document {
   street?: string;
   city: string;
+  state: string;
   postcode: string;
 }
 

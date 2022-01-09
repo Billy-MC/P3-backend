@@ -35,6 +35,7 @@ const customerSchema = new Schema({
   address: {
     street: { type: String },
     city: { type: String },
+    state: { type: String },
     postcode: { type: String },
   },
   totalSpent: {

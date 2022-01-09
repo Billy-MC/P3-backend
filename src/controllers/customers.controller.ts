@@ -22,6 +22,7 @@ import { ICustomer } from '../types/customer';
  *              address:
  *                street: '245 George St'
  *                city: 'Syndey'
+ *                state: 'NSW'
  *                postcode: '2000'
  *              gender: female
  *              dob: '1996-07-13'
@@ -44,6 +45,7 @@ import { ICustomer } from '../types/customer';
  *              address:
  *                street: '245 George St'
  *                city: 'Syndey'
+ *                state: 'NSW'
  *                postcode: '2000'
  *              gender: male
  *              totalSpent: 0
@@ -109,6 +111,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *              - address:
  *                  street: 245 George St
  *                  city: Syndey
+ *                  state: 'NSW'
  *                  postcode: 2000
  *                email: ante@aol.net
  *                firstName: Madeson Lara
@@ -121,6 +124,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *              - address:
  *                  street: 245 George St
  *                  city: Syndey
+ *                  state: 'NSW'
  *                  postcode: 2000
  *                email: ante@aol.net
  *                firstName: Madeson Lara
@@ -133,6 +137,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *              - address:
  *                  street: 245 George St
  *                  city: Syndey
+ *                  state: 'NSW'
  *                  postcode: 2000
  *                email: ante@aol.net
  *                firstName: Madeson Lara
@@ -176,6 +181,7 @@ const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
  *              address:
  *                street: 245 George St
  *                city: Syndey
+ *                state: 'NSW'
  *                postcode: 2000
  *              email: ante@aol.net
  *              firstName: Madeson Lara
@@ -241,6 +247,7 @@ const getCustomerByEmail: RequestHandler = async (req: Request, res: Response) =
  *              address:
  *                street: '245 George St'
  *                city: 'Syndey'
+ *                state: 'NSW'
  *                postcode: '2000'
  *              gender: male
  *              totalSpent: 0
@@ -301,6 +308,7 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  *            address:
  *              street: '245 George St'
  *              city: 'Syndey'
+ *              state: 'NSW'
  *              postcode: '2000'
  *            notification:
  *              - phone
@@ -322,6 +330,7 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  *                address:
  *                  street: '245 George St'
  *                  city: 'Syndey'
+ *                  state: 'NSW'
  *                  postcode: '2000'
  *                notification:
  *                  - phone
