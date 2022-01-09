@@ -3,16 +3,23 @@ import Document from 'mongoose';
 interface Address extends Document {
   street?: string;
   city: string;
-  postCode: string;
+  postcode: string;
 }
 
 enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
+  NOTTOTELL = 'NOTTOTELL',
+}
+
+enum Notification {
+  SMS = 'SMS',
+  EMAIL = 'EMAIL',
+  PHONE = 'PHONE',
 }
 
 export interface ICustomer extends Document {
-  customerId: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -21,4 +28,5 @@ export interface ICustomer extends Document {
   notification?: Notification;
   gender: Gender;
   address: Address;
+  spending?: number;
 }

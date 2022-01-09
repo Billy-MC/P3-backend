@@ -12,8 +12,16 @@ const customerSchema = new Schema({
     type: String,
     required: true,
   },
+  lastName: {
+    type: String,
+    required: true,
+  },
   dob: {
     type: Date,
+    required: true,
+  },
+  phone: {
+    type: String,
     required: true,
   },
   notification: {
@@ -27,8 +35,20 @@ const customerSchema = new Schema({
   address: {
     street: { type: String },
     city: { type: String },
-    postCode: { type: String },
+    postcode: { type: String },
   },
+  totalSpent: {
+    type: Number,
+  },
+  orderAccumulation: {
+    type: Number,
+  },
+});
+customerSchema.pre('save', async function customerInit(next) {
+  this.totalSpent = await 0;
+  this.orderAccumulation = await 0;
+  this.notification = await ['email'];
+  next();
 });
 
 const Customer = model('Customer', customerSchema);

@@ -8,12 +8,17 @@ import apiRouter from '@routes/api.route';
 import indexRouter from '@routes/index.route';
 import error404 from '@middleware/error-404';
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('./utils/swagger');
+
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
