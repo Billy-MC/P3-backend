@@ -69,6 +69,13 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
   }
 
   try {
+    // check if Customer exist
+    const existingCustomer = await Customer.findOne({ email });
+    if (existingCustomer) {
+      return res.status(403).json({
+        error: 'This email has already been existed!',
+      });
+    }
     const customer: ICustomer = await Customer.create({
       email,
       firstName,
@@ -76,6 +83,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
       phone,
       address,
     });
+
     return res.status(201).json(customer);
   } catch (e) {
     return res.status(400).json((e as Error).message);
