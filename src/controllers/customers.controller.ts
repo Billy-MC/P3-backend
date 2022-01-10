@@ -63,34 +63,22 @@ import { ICustomer } from '../types/customer';
  *                  exmaple: 'error message'
  */
 const createNewCustomer: RequestHandler = async (req: Request, res: Response) => {
-  const { email, firstName, lastName, phone, dob, notification, gender, address } = req.body;
-  if (
-    gender === 'male' ||
-    gender === 'female' ||
-    gender === 'undisclosed' ||
-    gender === null ||
-    gender === undefined ||
-    gender === ''
-  ) {
-    try {
-      const customer: ICustomer = await Customer.create({
-        email,
-        firstName,
-        lastName,
-        phone,
-        dob,
-        notification,
-        gender,
-        address,
-      });
-      return res.status(201).json(customer);
-    } catch (e) {
-      return res.status(400).json((e as Error).message);
-    }
-  } else {
-    return res
-      .status(404)
-      .json({ error: 'please enter male or female or undisclosed in gender or you can skip the gender option' });
+  const { email, firstName, lastName, phone, address } = req.body;
+  if (!email || !firstName || !lastName || !phone || !address) {
+    return res.status(400).json({ error: 'Please enter all required data!' });
+  }
+
+  try {
+    const customer: ICustomer = await Customer.create({
+      email,
+      firstName,
+      lastName,
+      phone,
+      address,
+    });
+    return res.status(201).json(customer);
+  } catch (e) {
+    return res.status(400).json((e as Error).message);
   }
 };
 
