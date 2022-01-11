@@ -350,9 +350,9 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  */
 const updateCustomerByEmail: RequestHandler = async (req: Request, res: Response) => {
   const { email } = req.params;
-  const { firstName, lastName, phone, dob, notification, gender, address } = req.body;
+  const { firstName, lastName, phone, address } = req.body;
 
-  if (!firstName || !lastName || !phone || !notification || !dob || !gender || !address) {
+  if (!firstName || !lastName || !phone || !address) {
     return res.status(400).json({ error: 'input fields cannot be empty.' });
   }
 
@@ -367,9 +367,6 @@ const updateCustomerByEmail: RequestHandler = async (req: Request, res: Response
           firstName,
           lastName,
           phone,
-          dob,
-          notification,
-          gender,
           address,
         },
         { new: true },
