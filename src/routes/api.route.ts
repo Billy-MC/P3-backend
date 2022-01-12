@@ -10,7 +10,9 @@ const router = express.Router();
 router.get('/health', (req: Request, res: Response) => {
   res.send('APIs working');
 });
-router.use('/', indexRouter);
+router.get('/', (req: Request, res: Response) => {
+  res.send('APIs Index');
+});
 router.use('/users', userRouter);
 router.use('/products', productRouter);
 router.use('/customers', customerRouter);
