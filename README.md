@@ -103,6 +103,12 @@ DB_DATABASE_LOCAL=devils-crm
 
 DB_NAME=CRMsystemDB
 
+DB_USER='devils'
+DB_PASSWORD='devils'
+DB_HOST=devils-crm.8y5vc.mongodb.net
+DE_HOST_UAT=devilscrm-uat.yqzp1.mongodb.net
+DB_DATABASE=myFirstDatabase?retryWrites=true&w=majority
+
 PORT=3000
 
 JWT_SECRET=KIMMINJUIZONEMAYAWAKISAKURAWIZONE

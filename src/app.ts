@@ -25,7 +25,6 @@ const morganLog =
       });
 
 app.use(morganLog);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

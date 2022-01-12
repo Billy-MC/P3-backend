@@ -1,6 +1,6 @@
 apps:
   - name: 'DevilsCRM'
-    script: './src/index.ts'
+    script: 'dist/index.js'
     node_args: '-r ts-node/register -r tsconfig-paths/register'
     kill_timeout: 10000
     watch: true
