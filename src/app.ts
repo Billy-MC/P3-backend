@@ -5,7 +5,6 @@ import 'express-async-errors';
 import morgan from 'morgan';
 import cors from 'cors';
 import apiRouter from '@routes/api.route';
-import indexRouter from '@routes/index.route';
 import error404 from '@middleware/error-404';
 
 const swaggerUi = require('swagger-ui-express');
@@ -13,13 +12,26 @@ const swaggerJsDoc = require('./utils/swagger');
 
 const app = express();
 
-app.use(morgan('dev'));
+const morganLog =
+  process.env.NODE_ENV === 'development'
+    ? morgan('dev')
+    : morgan('common', {
+        skip(req: Request, res: Response) {
+          if (req.url === '/health') {
+            return res.statusCode < 400;
+          }
+          return false;
+        },
+      });
+
+app.use(morganLog);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 
-app.use('/', indexRouter);
+app.use('/', apiRouter);
 app.use('/api', apiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
 

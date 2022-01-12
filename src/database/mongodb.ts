@@ -2,16 +2,38 @@ import mongoose from 'mongoose';
 import logger from '@config/winston';
 
 export default async () => {
-  if (!process.env.CONNECTION_STRING) {
+  const {
+    DB_HOST_LOCAL,
+    DB_PORT,
+    DB_DATABASE_LOCAL,
+    NODE_ENV,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
+    DB_HOST,
+    DB_DATABASE,
+    DE_HOST_UAT,
+  } = process.env;
+
+  let connectionString: string;
+
+  if (NODE_ENV === 'production') {
+    connectionString = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_DATABASE}`;
+  } else if (NODE_ENV === 'uat') {
+    connectionString = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DE_HOST_UAT}/${DB_DATABASE}`;
+  } else {
+    connectionString = `mongodb://${DB_HOST_LOCAL}:${DB_PORT}/${DB_DATABASE_LOCAL}`;
+  }
+
+  if (!connectionString) {
     logger.error('connection string not defined');
     process.exit(1);
   }
-  const connectionString = process.env.CONNECTION_STRING;
 
   const connect = async (): Promise<void> => {
     try {
       await mongoose.connect(connectionString);
-      logger.info(`Successfully connected to database: ${process.env.DB_NAME}, ${process.env.CONNECTION_STRING}`);
+      logger.info(`Successfully connected to database: ${DB_NAME}, ${connectionString}`);
       return;
     } catch (error) {
       logger.error('Error connecting to database: ', error);

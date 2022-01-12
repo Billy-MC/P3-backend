@@ -83,14 +83,28 @@ npm start
 
 ### environment
 
+1. Change you `NODE_ENV` for you testing environment
+
+Developer:
+
+- NODE_ENV=development
+
+DevOPs:
+
+- Production: NODE_ENV=production
+- UAT: NODE_ENV=uat
+
+```
 NODE_ENV=development
 
-CONNECTION_STRING=mongodb://localhost:27017/devils-crm
+DB_HOST_LOCAL=localhost
+DB_PORT=27017
+DB_DATABASE_LOCAL=devils-crm
 
-DB_NAME="CRMsystemDB"
+DB_NAME=CRMsystemDB
 
 PORT=3000
 
 JWT_SECRET=KIMMINJUIZONEMAYAWAKISAKURAWIZONE
-
 JWT_EXPIRES_IN=1d
+```
