@@ -24,7 +24,7 @@ import { ICustomer } from '../types/customer';
  *                city: 'Syndey'
  *                state: 'NSW'
  *                postcode: '2000'
- *              gender: female
+ *              gender: Female
  *              dob: '1996-07-13'
  *    responses:
  *      '201':
@@ -47,7 +47,7 @@ import { ICustomer } from '../types/customer';
  *                city: 'Syndey'
  *                state: 'NSW'
  *                postcode: '2000'
- *              gender: male
+ *              gender: Male
  *              totalSpent: 0
  *              orderAccumulation: 0
  *              __v: 0
@@ -67,7 +67,6 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
   if (!email || !firstName || !lastName || !phone || !address || !gender) {
     return res.status(400).json({ error: 'Please enter all required data!' });
   }
-
   try {
     // check if Customer exist
     const existingCustomer = await Customer.findOne({ email });
@@ -115,7 +114,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *                lastName: Jakeem Fuller
  *                dob: '1996-07-13T00:00:00.000Z'
  *                phone: (07) 4726 4819
- *                gender: female
+ *                gender: Female
  *                totalSpent: 0
  *                orderAccumulation: 0
  *              - address:
@@ -128,7 +127,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *                lastName: Jakeem Fuller
  *                dob: '1996-07-13T00:00:00.000Z'
  *                phone: (07) 4726 4819
- *                gender: female
+ *                gender: Female
  *                totalSpent: 0
  *                orderAccumulation: 0
  *              - address:
@@ -141,7 +140,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  *                lastName: Jakeem Fuller
  *                dob: '1996-07-13T00:00:00.000Z'
  *                phone: (07) 4726 4819
- *                gender: female
+ *                gender: Female
  *                totalSpent: 0
  *                orderAccumulation: 0
  */
@@ -187,7 +186,7 @@ const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
  *              phone: (07) 4726 4819
  *              notification:
  *                - email
- *              gender: female
+ *              gender: Female
  *              totalSpent: 0
  *              orderAccumulation: 0
  *      '404':
@@ -246,7 +245,7 @@ const getCustomerByEmail: RequestHandler = async (req: Request, res: Response) =
  *                city: 'Syndey'
  *                state: 'NSW'
  *                postcode: '2000'
- *              gender: male
+ *              gender: Male
  *              totalSpent: 0
  *              orderAccumulation: 0
  *              __v: 0
@@ -310,7 +309,7 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  *            notification:
  *              - phone
  *              - email
- *            gender: male
+ *            gender: Male
  *            dob: '1996-02-28'
  *    responses:
  *      '200':
@@ -332,7 +331,7 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  *                notification:
  *                  - phone
  *                  - email
- *                gender: male
+ *                gender: Male
  *                dob: '1996-02-28'
  *      '400':
  *        description: Failed
