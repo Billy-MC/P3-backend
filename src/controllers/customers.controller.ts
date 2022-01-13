@@ -16,8 +16,8 @@ import { ICustomer } from '../types/customer';
  *            type: object
  *          example:
  *              email: ante@aol.net
- *              firstName: Madeson Lara
- *              lastName: Jakeem Fuller
+ *              firstName: Madeson
+ *              lastName: Jakeem
  *              phone: (07) 4726 4819
  *              address:
  *                street: '245 George St'
@@ -94,7 +94,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  * @swagger
  * /customers:
  *  get:
- *    summary: return all Customers, remove _id, notification
+ *    summary: return all Customers, remove  notification, __version
  *    tags: [Customers]
  *    responses:
  *      200:
@@ -146,7 +146,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
  */
 const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
   try {
-    const customers = await Customer.find({}, { _id: 0, notification: 0, __v: 0 }).exec();
+    const customers = await Customer.find({}, { notification: 0, __v: 0 }).exec();
     res.status(200).json(customers);
   } catch (e) {
     res.status(400).json((e as Error).message);
@@ -157,7 +157,7 @@ const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
  * @swagger
  * /customers/{email}:
  *  get:
- *    summary: return Customers by email, remove _id
+ *    summary: return Customers by email
  *    tags: [Customers]
  *    parameters:
  *      - name: email
