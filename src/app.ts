@@ -5,6 +5,7 @@ import 'express-async-errors';
 import morgan from 'morgan';
 import cors from 'cors';
 import apiRouter from '@routes/api.route';
+import indexRouter from '@routes/index.route';
 import error404 from '@middleware/error-404';
 
 const swaggerUi = require('swagger-ui-express');
@@ -30,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 
-app.use('/', apiRouter);
+app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
 
