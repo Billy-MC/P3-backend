@@ -27,7 +27,7 @@ export interface ICustomer extends Document {
   phone: string;
   dob?: Date;
   notification?: Notification;
-  gender?: Gender;
+  gender: Gender;
   address: Address;
   spending?: number;
 }

@@ -63,8 +63,8 @@ import { ICustomer } from '../types/customer';
  *                  exmaple: 'error message'
  */
 const createNewCustomer: RequestHandler = async (req: Request, res: Response) => {
-  const { email, firstName, lastName, phone, address } = req.body;
-  if (!email || !firstName || !lastName || !phone || !address) {
+  const { email, firstName, lastName, phone, address, gender } = req.body;
+  if (!email || !firstName || !lastName || !phone || !address || !gender) {
     return res.status(400).json({ error: 'Please enter all required data!' });
   }
 
@@ -82,6 +82,7 @@ const createNewCustomer: RequestHandler = async (req: Request, res: Response) =>
       lastName,
       phone,
       address,
+      gender,
     });
 
     return res.status(201).json(customer);
