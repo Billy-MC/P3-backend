@@ -31,8 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
-
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
