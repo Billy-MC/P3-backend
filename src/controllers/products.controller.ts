@@ -1,6 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
 import Product from '@models/products.model';
-import { isEmpty } from 'lodash';
 import { IProduct } from '../types/products';
 
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
@@ -12,58 +11,57 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
-const getProductById: RequestHandler = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  if (isEmpty(id)) {
-    return res.status(404).json({
-      error: 'ID can not found !',
+const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
+  try {
+    const { sku } = req.params;
+    const productBySku = await Product.findOne({
+      sku: String(sku)
     });
+    if (productBySku) {
+      res.status(200).json({ message: productBySku });
+    } else {
+      res.status(404).json({ error: `${sku} not found` });
+    }
+  } catch (e) {
+    res.status(400).json({ error: e.message });
   }
-  const productById = await Product.findOne({
-    productId: String(id),
-  });
-  if (!productById) {
-    return res.status(404).json({
-      error: 'product can not found !',
-    });
-  }
-  return res.status(200).json(productById);
 };
 
 const createProduct: RequestHandler = async (req: Request, res: Response) => {
-  const { productId, productName, category, price, quantity, description } = req.body;
-  if (!productName || !category || !quantity || !price) {
-    return res.status(404).json({
-      error: ' Input field must not be empty ! ',
+  try {
+    const {
+      productName,
+      category,
+      price,
+      quantity,
+    } = req.body;
+    const product: IProduct = await Product.create({
+      productName,
+      category,
+      price,
+      quantity,
     });
+    res.status(201).json(product);
+  } catch (e) {
+    res.status(400).json({ error: e.message });
   }
-  const product: IProduct = await Product.create({
-    productId,
-    productName,
-    category,
-    price,
-    quantity,
-    description,
-  });
-  return res.status(200).json(product);
 };
 
-const updateProductById: RequestHandler = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { productName, category, quantity, price, description } = req.body;
-  if (!productName || !category || !quantity || !price) {
+const updateProductBySku: RequestHandler = async (req: Request, res: Response) => {
+  const { sku } = req.params;
+  const { productName, category, price, quantity } = req.body;
+  if (!productName || !category || !price || !quantity ) {
     return res.status(404).json({
       error: ' Input field must not be empty ! ',
     });
   }
   const product = await Product.findOneAndUpdate(
-    { productId: String(id) },
+    { sku: String(sku) },
     {
       productName,
       category,
       price,
       quantity,
-      description,
     },
     { new: true },
   ).exec();
@@ -75,17 +73,23 @@ const updateProductById: RequestHandler = async (req: Request, res: Response) =>
   return res.status(200).json(product);
 };
 
-const deleteProductById: RequestHandler = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const product = await Product.findOneAndDelete({ productId: String(id) }).exec();
-  if (!product) {
-    return res.status(404).json({
-      error: 'product not found ',
+const deleteProductBySku: RequestHandler = async (req: Request, res: Response) => {
+  try {
+    const { sku } = req.params;
+    const CheckBySku = await Product.findOne({
+      sku: String(sku)
     });
+    if (CheckBySku) {
+      await Product.deleteOne({
+        sku: String(sku)
+      });
+      res.status(204).json({ message: 'deleted' });
+    } else {
+      res.status(404).json({ error: `${sku} not found` });
+    }
+  } catch (e) {
+    res.status(400).json({ error: e.message });
   }
-  return res.status(204).json({
-    message: ' Successfully deleted ',
-  });
 };
 
-export { getAllProducts, getProductById, createProduct, updateProductById, deleteProductById };
+export { getAllProducts, getProductBySku, createProduct, updateProductBySku, deleteProductBySku };

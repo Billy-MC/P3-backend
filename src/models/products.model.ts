@@ -3,8 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { IProduct } from 'products';
 
 const productSchema = new Schema({
-  productId: {
+  sku: {
     type: String,
+    index: true,
     unique: true,
   },
   productName: {
@@ -14,7 +15,6 @@ const productSchema = new Schema({
   category: {
     type: String,
     required: true,
-    enum: ['computers', 'phones', 'accesories'],
   },
   price: {
     type: Number,
@@ -25,14 +25,10 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
-  description: {
-    default: '',
-    type: String,
-  },
 });
 
-productSchema.pre('save', async function productId(next) {
-  this.productId = await uuidv4();
+productSchema.pre('save', async function productInit(next) {
+  this.sku = await uuidv4();
   next();
 });
 
