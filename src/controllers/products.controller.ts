@@ -35,6 +35,10 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
       price,
       quantity,
     } = req.body;
+    const productByName = await Product.findOne({
+      productName: productName
+    });
+    if (!productByName) {
     const product: IProduct = await Product.create({
       productName,
       category,
@@ -42,6 +46,9 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
       quantity,
     });
     res.status(201).json(product);
+    } else {
+      res.status(404).json({ error: "duplicate product name" });
+    }
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
