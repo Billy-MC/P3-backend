@@ -29,7 +29,13 @@ app.use(morganLog);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cors());
+app.use(
+  cors({
+    exposedHeaders: 'Authorization',
+    origin: ['http://localhost:8000', 'http://devils-frontend.s3-website-us-east-1.amazonaws.com'],
+    credentials: true,
+  }),
+);
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);

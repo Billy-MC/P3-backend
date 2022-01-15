@@ -6,6 +6,7 @@ import { validateEmail, validatePassword } from '@utils/validator';
 import type { IUser } from '../types/users';
 
 // create user
+
 const signUp: RequestHandler = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password, confirmedPassword } = req.body;
 
@@ -34,9 +35,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
   // check if user exist
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return res.status(403).json({
-      error: 'This email has already been existed!',
-    });
+    return res.status(403).send('This email has already been existed!');
   }
 
   const hashedPassword = await hashPassword(password);
@@ -78,7 +77,7 @@ const signIn = async (req: Request, res: Response): Promise<Response> => {
   }
 
   const currentUser = await User.findOne({ email }).select('+password');
-  if (!currentUser) return res.status(401).send({ error: 'User is not exist!' });
+  if (!currentUser) return res.status(401).send('User is not exist!');
 
   const correctPassword = await comparePassword(password, currentUser.password);
 
@@ -89,29 +88,69 @@ const signIn = async (req: Request, res: Response): Promise<Response> => {
   const token = generateToken(currentUser.userId, currentUser.role);
 
   const user = currentUser;
-  return res.set('Authorization', token).status(200).json({ user });
+  return res.set('Authorization', token).status(200).json({ email });
 };
 
 const getUsers = async (req: Request, res: Response) => {
-  const users = await User.find().exec();
-  return res.status(200).json(users);
+  try {
+    const users = await User.find({}).exec();
+    return res.status(200).json(users);
+  } catch (e) {
+    res.status(400).json((e as Error).message);
+  }
 };
 
-const getOneUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await User.findById(id).exec();
+const getOneUser: RequestHandler = async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const user = await User.findById(email).exec();
   if (!user) {
     return res.status(404).json({ error: 'user not found' });
   }
-  return res.json(user);
+  return res.status(200).json(user);
 };
 
-const deleteUser = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const deleteUser: RequestHandler = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ email: String(email) }).exec();
+    if (user) {
+      await User.deleteOne({ email: String(email) });
+      res.status(200).json(user);
+    } else {
+      res.status(400).json({ error: `${email} not found` });
+    }
+  } catch (e) {
+    res.status(400).json((e as Error).message);
+  }
 };
 
-const updateUser = (req: Request, res: Response) => {
-  res.status(200).send('Failed');
+const updateUser = async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { firstName, lastName, password } = req.body;
+
+  if (!firstName || !lastName || password) {
+    return res.status(400).json({ error: 'input fields cannot be empty.' });
+  }
+
+  try {
+    const userByEmail = await User.findOne({ email: `${email}` });
+    if (!userByEmail) {
+      res.status(404).json({ error: `${email} not found` });
+    } else {
+      const userUpdate = await User.findOneAndUpdate(
+        { email: `${email}` },
+        {
+          firstName,
+          lastName,
+          password,
+        },
+        { new: true },
+      ).exec();
+      return res.status(200).json(userUpdate);
+    }
+  } catch (e) {
+    return res.status(400).json((e as Error).message);
+  }
 };
 
 export { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn };
