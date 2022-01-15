@@ -37,7 +37,7 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
     const product = await Product.find().exec();
     return res.status(200).json(product);
   } catch (error) {
-    return res.status(400).json({ error });
+    res.status(400).json((error as Error).message);
   }
 };
 
@@ -79,15 +79,15 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { sku } = req.params;
     const productBySku = await Product.findOne({
-      sku: String(sku)
+      sku: String(sku),
     });
     if (productBySku) {
       res.status(200).json({ message: productBySku });
     } else {
       res.status(404).json({ error: `${sku} not found` });
     }
-  } catch (e) {
-    res.status(400).json({ error: e.message });
+  } catch (error) {
+    res.status(400).json((error as Error).message);
   }
 };
 
@@ -136,28 +136,23 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  */
 const createProduct: RequestHandler = async (req: Request, res: Response) => {
   try {
-    const {
-      productName,
-      category,
-      price,
-      quantity,
-    } = req.body;
+    const { productName, category, price, quantity } = req.body;
     const productByName = await Product.findOne({
-      productName: productName
+      productName,
     });
     if (!productByName) {
-    const product: IProduct = await Product.create({
-      productName,
-      category,
-      price,
-      quantity,
-    });
-    res.status(201).json(product);
+      const product: IProduct = await Product.create({
+        productName,
+        category,
+        price,
+        quantity,
+      });
+      res.status(201).json(product);
     } else {
-      res.status(404).json({ error: "duplicate product name" });
+      res.status(404).json({ error: 'duplicate product name' });
     }
-  } catch (e) {
-    res.status(400).json({ error: e.message });
+  } catch (error) {
+    res.status(400).json((error as Error).message);
   }
 };
 
@@ -216,7 +211,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
 const updateProductBySku: RequestHandler = async (req: Request, res: Response) => {
   const { sku } = req.params;
   const { productName, category, price, quantity } = req.body;
-  if (!productName || !category || !price || !quantity ) {
+  if (!productName || !category || !price || !quantity) {
     return res.status(404).json({
       error: ' Input field must not be empty ! ',
     });
@@ -280,18 +275,18 @@ const deleteProductBySku: RequestHandler = async (req: Request, res: Response) =
   try {
     const { sku } = req.params;
     const CheckBySku = await Product.findOne({
-      sku: String(sku)
+      sku: String(sku),
     });
     if (CheckBySku) {
       await Product.deleteOne({
-        sku: String(sku)
+        sku: String(sku),
       });
       res.status(204).json({ message: 'deleted' });
     } else {
       res.status(404).json({ error: `${sku} not found` });
     }
-  } catch (e) {
-    res.status(400).json({ error: e.message });
+  } catch (error) {
+    res.status(400).json((error as Error).message);
   }
 };
 
