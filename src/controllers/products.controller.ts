@@ -2,6 +2,36 @@ import { Request, RequestHandler, Response } from 'express';
 import Product from '@models/products.model';
 import { IProduct } from '../types/products';
 
+/**
+ * @swagger
+ * /products:
+ *  get:
+ *    summary: return all products, remove  notification, __version
+ *    tags: [Products]
+ *    responses:
+ *      200:
+ *        description:  array of Product Objects should be returned
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *            example:
+ *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba7'
+ *                productName: 'Healthcare Product X'
+ *                category: 'Healthcare'
+ *                price: 9
+ *                quantity: 7
+ *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *                productName: 'Healthcare Product Y'
+ *                category: 'Healthcare'
+ *                price: 3
+ *                quantity: 6
+ *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba1'
+ *                productName: 'Healthcare Product Z'
+ *                category: 'Healthcare'
+ *                price: 5
+ *                quantity: 2
+ */
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   try {
     const product = await Product.find().exec();
@@ -11,6 +41,40 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /products/{sku}:
+ *  get:
+ *    summary: return A product by sku
+ *    tags: [Products]
+ *    parameters:
+ *      - name: sku
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *        example: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *    responses:
+ *      200:
+ *        description:  array of Product Objects should be returned
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *            example:
+ *              sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *              productName: 'Healthcare Product Y'
+ *              category: 'Healthcare'
+ *              price: 3
+ *              quantity: 6
+ *      '404':
+ *        description: Not Found
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *              type: object
+ *            example: 'ante@aol.net not found'
+ */
 const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { sku } = req.params;
@@ -27,6 +91,49 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /products:
+ *  post:
+ *    tags: [Products]
+ *    summary: create a new product
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *          example:
+ *              productName: 'HealthCare Product A'
+ *              category: 'HealthCare'
+ *              price: 36
+ *              quantity: 9
+ *    responses:
+ *      '201':
+ *        description: Created
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *              type: object
+ *            example:
+ *              _id: 61da409632c8196efc5dd779
+ *              sku: 'd7845b19-62a2-4616-96b7-73a2e31e0520'
+ *              productName: 'Jewlry Product'
+ *              category: 'Jewlry'
+ *              price: 9
+ *              quantity: 7
+ *              __v: 0
+ *      '400':
+ *        description: Duplicate key
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ *                  exmaple: 'error message'
+ */
 const createProduct: RequestHandler = async (req: Request, res: Response) => {
   try {
     const {
@@ -54,6 +161,58 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /products/{sku}:
+ *  put:
+ *    tags: [Products]
+ *    summary: update a existing product by email
+ *    parameters:
+ *      - name: sku
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *        example: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *          example:
+ *            productName: 'Healthcare Product S'
+ *            category: 'Healthcare'
+ *            price: 16
+ *            quantity: 18
+ *    responses:
+ *      '200':
+ *        description: OK
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *                type: object
+ *            example:
+ *                sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *                productName: 'Healthcare Product S'
+ *                category: 'Healthcare'
+ *                price: 3
+ *                quantity: 6
+ *      '400':
+ *        description: Failed
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *              type: object
+ *            example: 'error message'
+ *      '404':
+ *        description: Not Found
+ *        content:
+ *          appplication/json:
+ *            schema:
+ *              type: object
+ *            example: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9 not found'
+ */
 const updateProductBySku: RequestHandler = async (req: Request, res: Response) => {
   const { sku } = req.params;
   const { productName, category, price, quantity } = req.body;
@@ -80,6 +239,43 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
   return res.status(200).json(product);
 };
 
+/**
+ * @swagger
+ * /products/{sku}:
+ *  delete:
+ *    summary: return removed products by sku
+ *    tags: [Products]
+ *    parameters:
+ *      - name: sku
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *        example: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
+ *    responses:
+ *      200:
+ *        description:  Deleted product should be returned
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *            example:
+ *              _id: 61da409632c8196efc5dd789
+ *              sku: 'd7845b19-62a2-4616-96b7-73a2e31e0520'
+ *              productName: 'Jewlry Product'
+ *              category: 'Jewlry'
+ *              price: 9
+ *              quantity: 7
+ *              __v: 0
+ *      404:
+ *        description: product not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *            example:
+ *              error: 'd7845b19-62a2-4616-96b7-73a2e31e0520 not found.'
+ */
 const deleteProductBySku: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { sku } = req.params;
