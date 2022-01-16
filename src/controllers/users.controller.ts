@@ -32,14 +32,15 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
     });
   }
 
-  // check if user exist
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(403).send('This email has already been existed!');
-  }
-
   const hashedPassword = await hashPassword(password);
+
   try {
+    // check if user exist
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(403).json({ error: 'This email has already been existed!' });
+    }
+
     const newUser: IUser = await User.create({
       email,
       firstName,
@@ -61,7 +62,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       .status(201)
       .json({
         data: {
-          user: newUser,
+          user: { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, role: newUser.role },
         },
       });
   } catch (error) {
@@ -69,31 +70,47 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
-const signIn = async (req: Request, res: Response): Promise<Response> => {
+const signIn = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).send({ error: 'Please provide email and password!' });
   }
+  try {
+    const currentUser = await User.findOne({ email }).select('+password');
+    if (!currentUser) {
+      return res.status(401).send('User is not exist!');
+    }
 
-  const currentUser = await User.findOne({ email }).select('+password');
-  if (!currentUser) return res.status(401).send('User is not exist!');
+    const correctPassword = await comparePassword(password, currentUser.password);
 
-  const correctPassword = await comparePassword(password, currentUser.password);
+    if (!correctPassword) {
+      return res.status(401).json({ error: 'Invalid password!' });
+    }
 
-  if (!correctPassword) {
-    return res.status(401).json({ error: 'Invalid password!' });
+    const token = generateToken(currentUser.userId, currentUser.role);
+    if (!token) {
+      return res.status(401).json({ error: 'Cannot sign the token' });
+    }
+
+    const user = currentUser;
+    return res
+      .set('Authorization', token)
+      .status(200)
+      .json({
+        currentUser: { email: user.email, firstName: user.firstName, lastName: user.lastName },
+      });
+  } catch (e) {
+    res.status(400).json({ error: (e as Error).message });
   }
-
-  const token = generateToken(currentUser.userId, currentUser.role);
-
-  const user = currentUser;
-  return res.set('Authorization', token).status(200).json({ email });
 };
 
 const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find({}).exec();
+    const users = await User.find().exec();
+    if (!users) {
+      res.status(400).json({ error: 'No users exist' });
+    }
     return res.status(200).json(users);
   } catch (e) {
     res.status(400).json((e as Error).message);
@@ -101,12 +118,16 @@ const getUsers = async (req: Request, res: Response) => {
 };
 
 const getOneUser: RequestHandler = async (req: Request, res: Response) => {
-  const { email } = req.params;
-  const user = await User.findById(email).exec();
-  if (!user) {
-    return res.status(404).json({ error: 'user not found' });
+  try {
+    const { email } = req.params;
+    const user = await User.findById(email).exec();
+    if (!user) {
+      return res.status(404).json({ error: 'User does not exist' });
+    }
+    return res.status(200).json(user);
+  } catch (e) {
+    res.status(400).json({ error: (e as Error).message });
   }
-  return res.status(200).json(user);
 };
 
 const deleteUser: RequestHandler = async (req: Request, res: Response) => {
