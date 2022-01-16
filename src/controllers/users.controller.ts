@@ -61,9 +61,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       .set('Authorization', token)
       .status(201)
       .json({
-        data: {
-          user: { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, role: newUser.role },
-        },
+        user: { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, role: newUser.role },
       });
   } catch (error) {
     return res.status(403).json((error as Error).message);
@@ -98,7 +96,7 @@ const signIn = async (req: Request, res: Response) => {
       .set('Authorization', token)
       .status(200)
       .json({
-        currentUser: { email: user.email, firstName: user.firstName, lastName: user.lastName },
+        user: { email: user.email, firstName: user.firstName, lastName: user.lastName },
       });
   } catch (e) {
     res.status(400).json({ error: (e as Error).message });
