@@ -32,7 +32,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
     exposedHeaders: 'Authorization',
-    origin: ['http://localhost:8000', 'http://devils-frontend.s3-website-us-east-1.amazonaws.com'],
+    origin: [
+      'http://localhost:8000',
+      'http://devils-frontend.s3-website-us-east-1.amazonaws.com',
+      'http://localhost:3000',
+    ],
     credentials: true,
   }),
 );
