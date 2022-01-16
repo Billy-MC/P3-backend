@@ -72,12 +72,12 @@ const signIn = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({ error: 'Please provide email and password!' });
+    return res.status(400).json({ error: 'Please provide email and password!' });
   }
   try {
     const currentUser = await User.findOne({ email }).select('+password');
     if (!currentUser) {
-      return res.status(401).send('User is not exist!');
+      return res.status(401).json({ error: 'User is not exist!' });
     }
 
     const correctPassword = await comparePassword(password, currentUser.password);
