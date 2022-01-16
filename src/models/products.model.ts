@@ -25,6 +25,9 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
+  description: {
+    type: String,
+  }
 });
 
 productSchema.pre('save', async function productInit(next) {

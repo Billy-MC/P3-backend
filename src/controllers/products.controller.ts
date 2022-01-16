@@ -21,16 +21,19 @@ import { IProduct } from '../types/products';
  *                category: 'Healthcare'
  *                price: 9
  *                quantity: 7
+ *                description: product description
  *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
  *                productName: 'Healthcare Product Y'
  *                category: 'Healthcare'
  *                price: 3
  *                quantity: 6
+ *                description: product description
  *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba1'
  *                productName: 'Healthcare Product Z'
  *                category: 'Healthcare'
  *                price: 5
  *                quantity: 2
+ *                description: product description
  */
 const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -67,13 +70,14 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
  *              category: 'Healthcare'
  *              price: 3
  *              quantity: 6
+ *              description: product description
  *      '404':
  *        description: Not Found
  *        content:
  *          appplication/json:
  *            schema:
  *              type: object
- *            example: 'ante@aol.net not found'
+ *            example: 'sku not found'
  */
 const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -108,6 +112,7 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  *              category: 'HealthCare'
  *              price: 36
  *              quantity: 9
+ *              description: product description
  *    responses:
  *      '201':
  *        description: Created
@@ -122,6 +127,7 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  *              category: 'Jewlry'
  *              price: 9
  *              quantity: 7
+ *              description: product description
  *              __v: 0
  *      '400':
  *        description: Duplicate key
@@ -136,7 +142,7 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  */
 const createProduct: RequestHandler = async (req: Request, res: Response) => {
   try {
-    const { productName, category, price, quantity } = req.body;
+    const { productName, category, price, quantity, description } = req.body;
     const productByName = await Product.findOne({
       productName,
     });
@@ -146,6 +152,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
         category,
         price,
         quantity,
+        description
       });
       res.status(201).json(product);
     } else {
@@ -180,6 +187,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
  *            category: 'Healthcare'
  *            price: 16
  *            quantity: 18
+ *            description: product description
  *    responses:
  *      '200':
  *        description: OK
@@ -193,6 +201,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
  *                category: 'Healthcare'
  *                price: 3
  *                quantity: 6
+ *                description: product description
  *      '400':
  *        description: Failed
  *        content:
@@ -206,11 +215,11 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
  *          appplication/json:
  *            schema:
  *              type: object
- *            example: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9 not found'
+ *            example: 'sku not found'
  */
 const updateProductBySku: RequestHandler = async (req: Request, res: Response) => {
   const { sku } = req.params;
-  const { productName, category, price, quantity } = req.body;
+  const { productName, category, price, quantity, description } = req.body;
   if (!productName || !category || !price || !quantity) {
     return res.status(404).json({
       error: ' Input field must not be empty ! ',
@@ -223,6 +232,7 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
       category,
       price,
       quantity,
+      description
     },
     { new: true },
   ).exec();
@@ -261,6 +271,7 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
  *              category: 'Jewlry'
  *              price: 9
  *              quantity: 7
+ *              description: product description
  *              __v: 0
  *      404:
  *        description: product not found
@@ -269,7 +280,7 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
  *            schema:
  *              type: object
  *            example:
- *              error: 'd7845b19-62a2-4616-96b7-73a2e31e0520 not found.'
+ *              error: 'sku not found.'
  */
 const deleteProductBySku: RequestHandler = async (req: Request, res: Response) => {
   try {
