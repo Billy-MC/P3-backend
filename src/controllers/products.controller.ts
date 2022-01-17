@@ -17,20 +17,20 @@ import { IProduct } from '../types/products';
  *              type: array
  *            example:
  *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba7'
- *                productName: 'Healthcare Product X'
- *                category: 'Healthcare'
+ *                productName: 'Computer Product X'
+ *                category: 'Computers'
  *                price: 9
  *                quantity: 7
  *                description: product description
  *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
- *                productName: 'Healthcare Product Y'
- *                category: 'Healthcare'
+ *                productName: 'Computer Product Y'
+ *                category: 'Computers'
  *                price: 3
  *                quantity: 6
  *                description: product description
  *              - sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba1'
- *                productName: 'Healthcare Product Z'
- *                category: 'Healthcare'
+ *                productName: 'Computer Product Z'
+ *                category: 'Computers'
  *                price: 5
  *                quantity: 2
  *                description: product description
@@ -66,8 +66,8 @@ const getAllProducts: RequestHandler = async (req: Request, res: Response) => {
  *              type: object
  *            example:
  *              sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
- *              productName: 'Healthcare Product Y'
- *              category: 'Healthcare'
+ *              productName: 'Computer Product Y
+ *              category: 'Computers'
  *              price: 3
  *              quantity: 6
  *              description: product description
@@ -108,8 +108,8 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  *          schema:
  *            type: object
  *          example:
- *              productName: 'HealthCare Product A'
- *              category: 'HealthCare'
+ *              productName: 'Computer Product A'
+ *              category: 'Computers'
  *              price: 36
  *              quantity: 9
  *              description: product description
@@ -123,8 +123,8 @@ const getProductBySku: RequestHandler = async (req: Request, res: Response) => {
  *            example:
  *              _id: 61da409632c8196efc5dd779
  *              sku: 'd7845b19-62a2-4616-96b7-73a2e31e0520'
- *              productName: 'Jewlry Product'
- *              category: 'Jewlry'
+ *              productName: 'Phone Product'
+ *              category: 'Phones'
  *              price: 9
  *              quantity: 7
  *              description: product description
@@ -152,7 +152,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
         category,
         price,
         quantity,
-        description
+        description,
       });
       res.status(201).json(product);
     } else {
@@ -183,8 +183,8 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
  *          schema:
  *            type: object
  *          example:
- *            productName: 'Healthcare Product S'
- *            category: 'Healthcare'
+ *            productName: 'Computer Product S'
+ *            category: 'Computers'
  *            price: 16
  *            quantity: 18
  *            description: product description
@@ -197,8 +197,8 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
  *                type: object
  *            example:
  *                sku: '507e9797-d9c9-43a2-ac0c-34f349ee7ba9'
- *                productName: 'Healthcare Product S'
- *                category: 'Healthcare'
+ *                productName: 'Computer Product S'
+ *                category: 'Computers'
  *                price: 3
  *                quantity: 6
  *                description: product description
@@ -232,7 +232,7 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
       category,
       price,
       quantity,
-      description
+      description,
     },
     { new: true },
   ).exec();
@@ -267,8 +267,8 @@ const updateProductBySku: RequestHandler = async (req: Request, res: Response) =
  *            example:
  *              _id: 61da409632c8196efc5dd789
  *              sku: 'd7845b19-62a2-4616-96b7-73a2e31e0520'
- *              productName: 'Jewlry Product'
- *              category: 'Jewlry'
+ *              productName: 'Phone Product'
+ *              category: 'Phones'
  *              price: 9
  *              quantity: 7
  *              description: product description
