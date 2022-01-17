@@ -118,7 +118,7 @@ const getUsers = async (req: Request, res: Response) => {
 const getOneUser: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email } = req.params;
-    const user = await User.findById(email).exec();
+    const user = await User.findOne(email).exec();
     if (!user) {
       return res.status(404).json({ error: 'User does not exist' });
     }
