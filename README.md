@@ -94,17 +94,4 @@ DevOPs:
 - Production: NODE_ENV=production
 - UAT: NODE_ENV=uat
 
-```
-NODE_ENV=development
 
-DB_HOST_LOCAL=localhost
-DB_PORT=27017
-DB_DATABASE_LOCAL=devils-crm
-
-DB_NAME=CRMsystemDB
-
-PORT=3000
-
-JWT_SECRET=KIMMINJUIZONEMAYAWAKISAKURAWIZONE
-JWT_EXPIRES_IN=1d
-```
