@@ -220,7 +220,7 @@ const createProduct: RequestHandler = async (req: Request, res: Response) => {
 const updateProductBySku: RequestHandler = async (req: Request, res: Response) => {
   const { sku } = req.params;
   const { productName, category, price, quantity, description } = req.body;
-  if (!productName || !category || !price || !quantity) {
+  if (!productName || !category || !price || !(quantity >= 0)) {
     return res.status(404).json({
       error: ' Input field must not be empty ! ',
     });
