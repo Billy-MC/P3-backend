@@ -8,9 +8,9 @@ import type { IUser } from '../types/users';
 // create user
 
 const signUp: RequestHandler = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password, confirmedPassword } = req.body;
+  const { firstName, lastName, email, phone, password, confirmedPassword } = req.body;
 
-  if (!email || !firstName || !lastName || !password || !confirmedPassword) {
+  if (!email || !firstName || !lastName || !password || !confirmedPassword || !phone) {
     return res.status(400).json({ error: 'Please enter all required data!' });
   }
   const passwordValidataResult = validatePassword(password);
@@ -45,6 +45,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       email,
       firstName,
       lastName,
+      phone,
       password: hashedPassword,
       role: req.body.role,
     });
@@ -61,7 +62,13 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       .set('Authorization', token)
       .status(201)
       .json({
-        user: { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, role: newUser.role },
+        user: {
+          email: newUser.email,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          phone: newUser.phone,
+          role: newUser.role,
+        },
       });
   } catch (error) {
     return res.status(403).json((error as Error).message);
@@ -145,9 +152,9 @@ const deleteUser: RequestHandler = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   const { email } = req.params;
-  const { firstName, lastName, password } = req.body;
+  const { firstName, lastName, phone, password } = req.body;
 
-  if (!firstName || !lastName || password) {
+  if (!firstName || !lastName || !password || !phone) {
     return res.status(400).json({ error: 'input fields cannot be empty.' });
   }
 
@@ -161,6 +168,7 @@ const updateUser = async (req: Request, res: Response) => {
         {
           firstName,
           lastName,
+          phone,
           password,
         },
         { new: true },

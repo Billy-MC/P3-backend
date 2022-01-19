@@ -3,6 +3,7 @@ export interface IUser {
   email: string;
   firstName: string;
   lastName: string;
+  phone: string;
   password: string;
   role: string;
 }
