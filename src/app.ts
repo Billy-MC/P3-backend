@@ -35,12 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
     exposedHeaders: 'Authorization',
-    origin: [
-      'http://localhost:8000',
-      'http://devils-frontend.s3-website-us-east-1.amazonaws.com',
-      'https://devilscrm.link',
-      'http://localhost:3000',
-    ],
+    origin: ['http://localhost:8000', 'https://devilscrm.link', 'http://localhost:3000'],
     credentials: true,
   }),
 );
