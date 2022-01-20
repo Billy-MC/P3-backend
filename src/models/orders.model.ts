@@ -27,7 +27,7 @@ const orderSchema = new Schema({
   },
 });
 
-orderSchema.pre('save', async function orderId(next) {
+orderSchema.pre('save', async function (next) {
   const now: number = await new Date().getTime();
   this.orderId = await `OR-${now}`;
   this.dateCreated = await now;

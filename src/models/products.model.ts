@@ -27,10 +27,10 @@ const productSchema = new Schema({
   },
   description: {
     type: String,
-  }
+  },
 });
 
-productSchema.pre('save', async function productInit(next) {
+productSchema.pre('save', async function (next) {
   this.sku = await uuidv4();
   next();
 });

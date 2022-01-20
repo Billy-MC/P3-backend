@@ -45,7 +45,7 @@ const customerSchema = new Schema({
     type: Number,
   },
 });
-customerSchema.pre('save', async function customerInit(next) {
+customerSchema.pre('save', async function (next) {
   this.totalSpent = await 0;
   this.orderAccumulation = await 0;
   this.notification = await ['email'];

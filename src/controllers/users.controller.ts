@@ -5,6 +5,27 @@ import { hashPassword, comparePassword } from '@utils/passwordHandler';
 import { validateEmail, validatePassword } from '@utils/validator';
 import type { IUser } from '../types/users';
 
+const createSendToken = (user: IUser, statusCode: number, res: Response) => {
+  const token = generateToken(user.userId, user.role);
+
+  if (!token) {
+    return res.status(401).json({ error: 'Cannot sign the token' });
+  }
+
+  return res
+    .set('Authorization', token)
+    .status(statusCode)
+    .json({
+      user: {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        phone: user.phone,
+      },
+    });
+};
+
 // create user
 
 const signUp: RequestHandler = async (req: Request, res: Response) => {
@@ -56,20 +77,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       });
     }
 
-    const token = generateToken(newUser.userId, newUser.role);
-
-    return res
-      .set('Authorization', token)
-      .status(201)
-      .json({
-        user: {
-          email: newUser.email,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          phone: newUser.phone,
-          role: newUser.role,
-        },
-      });
+    createSendToken(newUser, 200, res);
   } catch (error) {
     return res.status(403).json((error as Error).message);
   }
@@ -93,21 +101,73 @@ const signIn = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid password!' });
     }
 
-    const token = generateToken(currentUser.userId, currentUser.role);
-    if (!token) {
-      return res.status(401).json({ error: 'Cannot sign the token' });
-    }
-
-    const user = currentUser;
-    return res
-      .set('Authorization', token)
-      .status(200)
-      .json({
-        user: { email: user.email, firstName: user.firstName, lastName: user.lastName },
-      });
+    createSendToken(currentUser, 200, res);
   } catch (e) {
     res.status(400).json({ error: (e as Error).message });
   }
+};
+
+const updatePassword: RequestHandler = async (req: Request, res: Response) => {
+  const { email, currentPassword, password, confirmedPassword } = req.body;
+
+  // Get user from collection
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) {
+    return res.status(401).json({ error: 'User is not exist!' });
+  }
+
+  try {
+    // Check if POSTed current password is correct
+    const correctPassword = await comparePassword(currentPassword, user.password);
+    if (!correctPassword) {
+      return res.status(401).json({ error: 'Your current password is wrong!' });
+    }
+    // Validate the password pattern
+    const passwordValidataResult = validatePassword(password);
+    if (!passwordValidataResult) {
+      return res.status(400).json({
+        error:
+          'Password should be 8-32 characters and include at least 1 letter, 1 number and 1 special character (@,#,$,%,^,_,&,*)!',
+      });
+    }
+    // Check confirmed Password is match
+    if (password !== confirmedPassword) {
+      return res.status(400).json({ error: "The passwords don't match." });
+    }
+
+    const hashedPassword = await hashPassword(password);
+    // If so, update pasword
+    user.password = hashedPassword;
+    await user.save();
+    // Keep user logged in
+    createSendToken(user, 200, res);
+  } catch (e) {
+    res.status(400).json({ error: (e as Error).message });
+  }
+};
+
+const updateMe = async (req: Request, res: Response) => {
+  const { email, firstName, lastName, password, confirmedPassword } = req.body;
+  if (password || confirmedPassword) {
+    return res.status(400).json({ error: 'This route is not for password updates.' });
+  }
+  const updateInfo = { firstName, lastName };
+
+  const updatedCurrentUser = await User.findOneAndUpdate({ email }, updateInfo, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    user: updatedCurrentUser,
+  });
+};
+
+// inactive current User
+const deleteMe = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  await User.findOneAndUpdate({ email }, { active: false });
+  res.status(204).json({ data: null });
 };
 
 const getUsers = async (req: Request, res: Response) => {
@@ -180,4 +240,4 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn };
+export { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn, updatePassword, updateMe, deleteMe };

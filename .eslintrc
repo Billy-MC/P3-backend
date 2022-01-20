@@ -47,6 +47,7 @@
         "d.ts": "never"
       }
     ],
+    "func-names": ["error", "never", { "generators": "as-needed" }],
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "no-unused-vars": "off",

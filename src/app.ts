@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { HttpError } from 'http-errors';
 import express, { Request, Response } from 'express';
+import helmet from 'helmet';
 import 'express-async-errors';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -12,6 +13,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('./utils/swagger');
 
 const app = express();
+
+app.use(helmet());
 
 const morganLog =
   process.env.NODE_ENV === 'development'

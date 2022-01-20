@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { IUser } from 'users';
@@ -36,15 +37,36 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     minlength: 8,
+    select: false,
+  },
+  passwordChagedAt: { type: Date, select: false },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+
+  actice: {
+    type: Boolean,
+    default: true,
+    select: false,
   },
 });
 
-UserSchema.pre('save', async function userId(next) {
-  this.userId = await uuidv4();
+UserSchema.pre('save', function (next) {
+  this.userId = uuidv4();
   next();
 });
 
-UserSchema.methods.toJSON = function delPassword() {
+UserSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+  this.passwordChagedAt = Date.now() - 1000;
+  next();
+});
+
+UserSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
+UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   delete obj.__v;

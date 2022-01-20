@@ -6,4 +6,8 @@ export interface IUser {
   phone: string;
   password: string;
   role: string;
+  passwordChagedAt: Date;
+  active: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
