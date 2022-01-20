@@ -38,8 +38,7 @@ app.use(
     origin: [
       'http://localhost:8000',
       'http://devils-frontend.s3-website-us-east-1.amazonaws.com',
-      'https://www.devilscrm.link',
-      'devilscrm.link',
+      'https://devilscrm.link',
       'http://localhost:3000',
     ],
     credentials: true,
