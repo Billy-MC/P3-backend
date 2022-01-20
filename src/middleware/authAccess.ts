@@ -34,7 +34,7 @@ const authValidator = async (req: Request, res: Response, next: NextFunction) =>
 const isAdmin =
   (...roles: string[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.body.user.role)) {
       return res.status(403).json({ error: 'You do not have permission to perform this action' });
     }
     return next();
