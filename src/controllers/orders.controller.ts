@@ -19,13 +19,28 @@ import IOrder, { IProduct, ICustomerInfo } from '../types/order';
  *          example:
  *            customerInfo:
  *              name: James Rock
- *              email: ante@aol.net
+ *              email: jamesr@gmail.com
+ *              phone: 0413 222 111
+ *              address:
+ *                street: 10 Eva Street, Ultimo
+ *                city: Ultimo
+ *                state: NSW
+ *                postcode: 2222
  *            products:
  *              - sku: 0948c595-5766-4621-893a-a4b56553aa62
- *                quantity: 2
+ *                productName: Nintendo Switch
+ *                description: Best selling Mobile Console from Nintendo
+ *                quantity: 3
  *                price: 539
  *              - sku: 53d08caa-d952-422c-9baf-26539f21e3c1
+ *                productName: Play Station 5
+ *                description: The World's BEST leading next generation gaming station
  *                quantity: 2
+ *                price: 1200
+ *              - sku: e991208a-6c7c-4f21-ad7d-1d060c2b9495
+ *                productName: Nvidia RTX 3090
+ *                description: The graphic card you never brought
+ *                quantity: 1
  *                price: 539
  *    responses:
  *      '201':
@@ -81,7 +96,7 @@ const createOrder: RequestHandler = async (req: Request, res: Response) => {
 
     return res.status(201).json(order);
   } catch (error) {
-    return res.status(403).json((error as Error).message);
+    return res.status(403).json(error as Error);
   }
 };
 
@@ -254,17 +269,38 @@ const updateOrderStatusById: RequestHandler = async (req: Request, res: Response
     return res.status(400).json({ error: 'You are Only Allowed setting Status to COPMELTED, REJECTED, CANCELED' });
   }
 
-  const existOrder = await Order.findOne({ orderId: id }).exec();
   // check if existing order exist
-  if (!existOrder) {
-    return res.status(404).json({ error: 'order not found.' });
-  }
+  const existOrder = await Order.findOne({ orderId: id }).exec();
+  if (!existOrder) return res.status(404).json({ error: 'order not found.' });
+
   // check if order status is pending
-  if (existOrder.status !== 'PENDING') {
+  if (existOrder.status !== 'PENDING')
     return res.status(400).json({ error: 'You are Only Allowed to modifed status of PENGDING orders' });
+
+  // If trying to complete Order, checkeck if inventory full filled
+  if (status === 'COMPLETED') {
+    const { products } = { ...existOrder.toJSON() };
+    const skuProducts: { [key: string]: any } = products.reduce(
+      (prev, product: IProduct) => Object.assign(prev, { [product.sku]: product }),
+      {},
+    );
+    const SKUs: string[] = products.map(p => p.sku);
+    const result = await Product.find({ sku: { $in: SKUs } }).lean();
+    result.forEach(p => {
+      if (skuProducts[p.sku].quantity > p.quantity)
+        return res.status(400).json({
+          error: `${p.productName} has quantity: [${p.quantity}] is less than required quantity: [${
+            skuProducts[p.sku].quantity
+          }] .`,
+        });
+    });
   }
 
-  const order = await Order.findOneAndUpdate({ orderId: id }, { status }, { new: true }).exec();
+  existOrder.products.forEach(async product => {
+    await Product.findOneAndUpdate({ sku: String(product.sku) }, { $inc: { quantity: -product.quantity } });
+  });
+
+  const order = await Order.findOneAndUpdate({ orderId: id }, { status }, { new: true });
   return res.status(200).json(order);
 };
 

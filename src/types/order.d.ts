@@ -2,12 +2,22 @@ import Document from 'mongoose';
 
 export interface IProduct {
   sku: string;
+  productName: string;
   quantity: number;
   price: number;
+  description?: string;
+}
+interface Address extends Document {
+  street: string;
+  city: string;
+  state: string;
+  postcode: string;
 }
 export interface ICustomerInfo {
-  name: { type: string };
-  email: { type: string };
+  name: string;
+  email: string;
+  phone: string;
+  address: Address;
 }
 
 enum orderStatus {
@@ -22,5 +32,6 @@ export default interface IOrder extends Document {
   customerInfo: ICustomerInfo;
   products: IProduct[];
   dateCreated: Date;
+  invoiceId?: string;
   status: orderStatus;
 }

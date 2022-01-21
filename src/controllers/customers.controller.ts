@@ -187,8 +187,6 @@ const getAllCustomers: RequestHandler = async (req: Request, res: Response) => {
  *              notification:
  *                - email
  *              gender: Female
- *              totalSpent: 0
- *              orderAccumulation: 0
  *      '404':
  *        description: Not Found
  *        content:
@@ -315,7 +313,7 @@ const deleteCustomerByEmail: RequestHandler = async (req: Request, res: Response
  *      '200':
  *        description: OK
  *        content:
- *          appplication/json:
+ *          application/json:
  *            schema:
  *                type: object
  *            example:

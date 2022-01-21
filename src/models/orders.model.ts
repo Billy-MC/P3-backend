@@ -3,7 +3,9 @@ import IOrder from 'order';
 
 const product = new Schema({
   sku: { type: String, required: true },
+  productName: { type: String, required: true },
   quantity: { type: Number, required: true },
+  description: { type: String, required: false },
   price: { type: Number, default: 0 },
 });
 
@@ -16,10 +18,21 @@ const orderSchema = new Schema({
   customerInfo: {
     name: { type: String },
     email: { type: String },
+    phone: { type: String },
+    address: {
+      street: { type: String },
+      city: { type: String },
+      state: { type: String },
+      postcode: { type: String },
+    },
   },
   products: [product],
   dateCreated: {
     type: Date,
+  },
+  invoiceId: {
+    type: String,
+    required: false,
   },
   status: {
     type: String,
