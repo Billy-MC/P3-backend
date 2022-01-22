@@ -93,5 +93,3 @@ DevOPs:
 
 - Production: NODE_ENV=production
 - UAT: NODE_ENV=uat
-
-

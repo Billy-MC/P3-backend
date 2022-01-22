@@ -147,11 +147,11 @@ const updatePassword: RequestHandler = async (req: Request, res: Response) => {
 };
 
 const updateMe = async (req: Request, res: Response) => {
-  const { email, firstName, lastName, password, confirmedPassword } = req.body;
+  const { email, firstName, lastName, password, confirmedPassword, phone } = req.body;
   if (password || confirmedPassword) {
     return res.status(400).json({ error: 'This route is not for password updates.' });
   }
-  const updateInfo = { firstName, lastName };
+  const updateInfo = { firstName, lastName, phone };
 
   const updatedCurrentUser = await User.findOneAndUpdate({ email }, updateInfo, {
     new: true,

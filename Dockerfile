@@ -12,6 +12,8 @@ ENV PORT=3000
 ENV JWT_SECRET=KIMMINJUIZONEMAYAWAKISAKURAWIZONE
 ENV JWT_EXPIRES_IN=1d
 ENV PATH /devils-crm-backend/node_modules/.bin:$PATH
+ENV SENDGRID_API_KEY=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
+ENV SENDER_EMAIL=devilscrmpro@gmail.com
 
 COPY ./package.json ./
 COPY ./package-lock.json ./
