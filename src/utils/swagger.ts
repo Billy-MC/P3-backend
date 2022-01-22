@@ -12,7 +12,7 @@ module.exports = swaggerJsDoc({
       },
       description: 'Open API standard swagger document for Devils CRM System',
     },
-    servers: [{ url: 'http://127.0.0.1:3000/api' }],
+    servers: [{ url: 'http://localhost:3000/api' }],
   },
   apis: ['src/controllers/*.ts'],
 });
