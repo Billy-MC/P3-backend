@@ -1,12 +1,15 @@
 import { Request, Response, RequestHandler } from 'express';
-import { generateToken } from '@utils/jwt';
+import crypto from 'crypto';
+import { generateJWTToken } from '@utils/jwt';
 import User from '@models/users.model';
 import { hashPassword, comparePassword } from '@utils/passwordHandler';
 import { validateEmail, validatePassword } from '@utils/validator';
+import { emailTemplate, sendEmail } from '@utils/emailServices';
+import generateToken from '@utils/tokenGenerator';
 import type { IUser } from '../types/users';
 
-const createSendToken = (user: IUser, statusCode: number, res: Response) => {
-  const token = generateToken(user.userId, user.role);
+const createSendToken = (user: IUser, statusCode: number, res: Response, msg: string) => {
+  const token = generateJWTToken(user.userId, user.role);
 
   if (!token) {
     return res.status(401).json({ error: 'Cannot sign the token' });
@@ -16,6 +19,7 @@ const createSendToken = (user: IUser, statusCode: number, res: Response) => {
     .set('Authorization', token)
     .status(statusCode)
     .json({
+      message: msg,
       user: {
         email: user.email,
         firstName: user.firstName,
@@ -30,6 +34,8 @@ const createSendToken = (user: IUser, statusCode: number, res: Response) => {
 
 const signUp: RequestHandler = async (req: Request, res: Response) => {
   const { firstName, lastName, email, phone, password, confirmedPassword } = req.body;
+
+  const hashedPassword = await hashPassword(password);
 
   if (!email || !firstName || !lastName || !password || !confirmedPassword || !phone) {
     return res.status(400).json({ error: 'Please enter all required data!' });
@@ -53,15 +59,28 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
     });
   }
 
-  const hashedPassword = await hashPassword(password);
+  // check if user exist
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(403).json({ error: 'This email has already been existed!' });
+  }
+
+  // send confirm email
+  const confirmEmailToken = generateToken();
+  const confirmEmailLink = `${
+    process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://devilscrm.link'
+  }/emailActivation?token=${confirmEmailToken}`;
+
+  const emailContent = emailTemplate.confirmEmail(firstName, confirmEmailLink);
+
+  const sendEmailResult = await sendEmail(email, 'Verify you email', emailContent);
+
+  if (!sendEmailResult) {
+    return res.status(500).json({ error: 'Email server error' });
+  }
 
   try {
-    // check if user exist
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(403).json({ error: 'This email has already been existed!' });
-    }
-
+    // create new user
     const newUser: IUser = await User.create({
       email,
       firstName,
@@ -69,6 +88,8 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       phone,
       password: hashedPassword,
       role: req.body.role,
+      confirmEmailToken,
+      emailVerified: false,
     });
 
     if (newUser.role === '') {
@@ -77,7 +98,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
       });
     }
 
-    createSendToken(newUser, 200, res);
+    createSendToken(newUser, 200, res, 'Congratulations! Check your email to verify!');
   } catch (error) {
     return res.status(403).json((error as Error).message);
   }
@@ -89,10 +110,18 @@ const signIn = async (req: Request, res: Response) => {
   if (!email || !password) {
     return res.status(400).json({ error: 'Please provide email and password!' });
   }
+
   try {
     const currentUser = await User.findOne({ email }).select('+password');
+
     if (!currentUser) {
       return res.status(401).json({ error: 'User is not exist!' });
+    }
+    if (currentUser.emailVerified === false) {
+      return res.status(401).json({ error: 'Please verify your email' });
+    }
+    if (currentUser.active === false) {
+      return res.status(401).json({ error: 'This email is inactive' });
     }
 
     const correctPassword = await comparePassword(password, currentUser.password);
@@ -101,7 +130,7 @@ const signIn = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid password!' });
     }
 
-    createSendToken(currentUser, 200, res);
+    createSendToken(currentUser, 200, res, 'Logged in');
   } catch (e) {
     res.status(400).json({ error: (e as Error).message });
   }
@@ -140,7 +169,7 @@ const updatePassword: RequestHandler = async (req: Request, res: Response) => {
     user.password = hashedPassword;
     await user.save();
     // Keep user logged in
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, res, 'Seccessful! Please log in!');
   } catch (e) {
     res.status(400).json({ error: (e as Error).message });
   }
@@ -182,6 +211,91 @@ const getUsers = async (req: Request, res: Response) => {
   }
 };
 
+const forgotPassword: RequestHandler = async (req: Request, res: Response) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return res.status(401).json({ error: `There is no user with this email address.` });
+  }
+
+  const resetToken = generateToken();
+
+  const passwordExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  // expired 10mins
+  try {
+    await User.findOneAndUpdate(
+      { email: user.email },
+      { $set: { resetPasswordToken: resetToken, resetPasswordExpires: passwordExpires } },
+    );
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+
+  const resetPasswordLink = `${
+    process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://devilscrm.link'
+  }/resetPassword?token=${resetToken}`;
+  const emailContent = emailTemplate.resetPasswordEmail(user.firstName, resetPasswordLink);
+  const sendEmailResult = await sendEmail(req.body.email, 'Password change request', emailContent);
+  if (!sendEmailResult) {
+    return res.status(500).json({ error: 'Email server error' });
+  }
+
+  return res.status(200).json({
+    message: `A reset password email has been sent to ${req.body.email}, please check your email.`,
+  });
+};
+
+const resetPassword: RequestHandler = async (req: Request, res: Response) => {
+  const { password, confirmedPassword, token } = req.body;
+
+  if (!password || !confirmedPassword) {
+    return res.status(400).json({ error: 'Please enter all required data!' });
+  }
+  if (token === '') {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
+  const passwordValidataResult = validatePassword(password);
+  if (!passwordValidataResult) {
+    return res.status(400).json({
+      error:
+        'Password should be 8-32 characters and include at least 1 letter, 1 number and 1 special character (@,#,$,%,^,_,&,*)!',
+    });
+  }
+
+  if (password !== confirmedPassword) {
+    return res.status(400).json({ error: "The passwords don't match." });
+  }
+  try {
+    const requestUser = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: new Date(Date.now()) },
+    });
+    if (!requestUser) {
+      return res.status(401).json({ error: 'Invalid token.' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+
+  const user = { resetPasswordToken: token };
+
+  const hashedPassword = await hashPassword(password);
+  const updatedPassword = { password: hashedPassword };
+  const removeToken = { $unset: { resetPasswordToken: '' } };
+  const removeTokenExpires = { resetPasswordExpires: undefined };
+
+  try {
+    await User.findOneAndUpdate(user, updatedPassword, { new: true });
+    await User.findOneAndUpdate(user, removeToken, { new: true });
+    await User.findOneAndUpdate(user, removeTokenExpires, { new: true });
+    return res.status(200).json({ message: 'Password reset successfully! Please login' });
+  } catch (error) {
+    return res.status(400).send(error);
+  }
+};
+
 const getOneUser: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email } = req.params;
@@ -215,7 +329,7 @@ const updateUser = async (req: Request, res: Response) => {
   const { firstName, lastName, phone, password } = req.body;
 
   if (!firstName || !lastName || !password || !phone) {
-    return res.status(400).json({ error: 'input fields cannot be empty.' });
+    return res.status(400).json({ error: 'Input fields cannot be empty.' });
   }
 
   try {
@@ -240,4 +354,42 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, getOneUser, deleteUser, updateUser, signUp, signIn, updatePassword, updateMe, deleteMe };
+const verifyEmail: RequestHandler = async (req: Request, res: Response) => {
+  const { token } = req.query;
+  const tokenString = token?.toString();
+  if (tokenString?.trim() === '') {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
+  try {
+    const user = { confirmEmailToken: tokenString };
+
+    const existingUser = await User.findOne(user);
+    if (!existingUser) return res.status(401).json({ error: 'Invalid token.' });
+
+    const updateEmailVerification = { $set: { emailVerified: true } };
+    const removeConfirmToken = { $unset: { confirmEmailToken: '' } };
+
+    await User.findOneAndUpdate(user, updateEmailVerification, { new: true });
+    await User.findOneAndUpdate(user, removeConfirmToken, { new: true });
+
+    return res.status(201).json({ email: existingUser.email, message: 'Email verified. Please Login!' });
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
+};
+
+export {
+  getUsers,
+  getOneUser,
+  deleteUser,
+  updateUser,
+  signUp,
+  signIn,
+  updatePassword,
+  updateMe,
+  deleteMe,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+};

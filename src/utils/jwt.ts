@@ -5,7 +5,7 @@ interface JwtPayload {
   role: string;
 }
 
-const generateToken = (id: string, role: string) => {
+const generateJWTToken = (id: string, role: string) => {
   const secret = process.env.JWT_SECRET as Secret;
   const token = jwt.sign({ id, role }, secret, {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
@@ -22,4 +22,4 @@ const validateToken = (token: string): JwtPayload => {
     return error as JwtPayload;
   }
 };
-export { generateToken, validateToken };
+export { generateJWTToken, validateToken };

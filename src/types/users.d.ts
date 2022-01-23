@@ -10,4 +10,5 @@ export interface IUser {
   active: boolean;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  emailVerified: boolean;
 }

@@ -40,10 +40,17 @@ const UserSchema = new Schema({
     select: false,
   },
   passwordChagedAt: { type: Date, select: false },
+
+  confirmEmailToken: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 
-  actice: {
+  emailVerified: {
+    type: Boolean,
+    required: true,
+  },
+
+  active: {
     type: Boolean,
     default: true,
     select: false,
