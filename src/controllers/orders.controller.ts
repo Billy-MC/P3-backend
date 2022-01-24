@@ -2,7 +2,9 @@ import { Request, RequestHandler, Response } from 'express';
 import Order from '@models/orders.model';
 import Customer from '@models/customers.model';
 import Product from '@models/products.model';
-import IOrder, { IProduct, ICustomerInfo } from '../types/order';
+import Invoice from '@models/invoices.model';
+import IInvoice from 'invoice';
+import IOrder, { IProduct } from '../types/order';
 
 /**
  * @swagger
@@ -108,7 +110,7 @@ const createOrder: RequestHandler = async (req: Request, res: Response) => {
  *    tags: [Orders]
  *    responses:
  *      200:
- *        description:  array of Customer Objects should be returned
+ *        description:  array of Orders Objects should be returned
  *        content:
  *          application/json:
  *            schema:
@@ -271,6 +273,7 @@ const updateOrderStatusById: RequestHandler = async (req: Request, res: Response
 
   // check if existing order exist
   const existOrder = await Order.findOne({ orderId: id }).exec();
+
   if (!existOrder) return res.status(404).json({ error: 'order not found.' });
 
   // check if order status is pending
@@ -279,27 +282,47 @@ const updateOrderStatusById: RequestHandler = async (req: Request, res: Response
 
   // If trying to complete Order, checkeck if inventory full filled
   if (status === 'COMPLETED') {
-    const { products } = { ...existOrder.toJSON() };
+    const { products, customerInfo, dateCreated, orderId } = { ...existOrder.toJSON() };
+    const customer = await Customer.findOne({ email: customerInfo.email });
+    const totalPrice = products.reduce((prev, p) => prev + p.price * p.quantity, 0);
+    // Checkif customer is valid in database
+    if (!customer)
+      return res.status(404).json({ error: `Customer Corresponding to email: ${customerInfo.email} not found` });
     const skuProducts: { [key: string]: any } = products.reduce(
       (prev, product: IProduct) => Object.assign(prev, { [product.sku]: product }),
       {},
     );
     const SKUs: string[] = products.map(p => p.sku);
     const result = await Product.find({ sku: { $in: SKUs } }).lean();
-    result.forEach(p => {
-      if (skuProducts[p.sku].quantity > p.quantity)
+    for (let i = 0; i < result.length; i += 1) {
+      if (skuProducts[result[i].sku].quantity > result[i].quantity)
         return res.status(400).json({
-          error: `${p.productName} has quantity: [${p.quantity}] is less than required quantity: [${
-            skuProducts[p.sku].quantity
+          error: `${result[i].productName} has quantity: [${result[i].quantity}] is less than required quantity: [${
+            skuProducts[result[i].sku].quantity
           }] .`,
         });
+    }
+    // Veryfication passed
+
+    // reduce inventory
+    existOrder.products.forEach(async product => {
+      await Product.findOneAndUpdate({ sku: String(product.sku) }, { $inc: { quantity: -product.quantity } });
     });
+
+    // create new Invoice
+    const invoice: IInvoice = await Invoice.create({
+      customerInfo,
+      dateCreated,
+      orderId,
+      products,
+    });
+
+    // modify customer data
+    await Customer.findOneAndUpdate(
+      { email: customerInfo.email },
+      { $inc: { orderAccumulation: 1, totalSpent: totalPrice }, invoiceId: invoice.invoiceId },
+    );
   }
-
-  existOrder.products.forEach(async product => {
-    await Product.findOneAndUpdate({ sku: String(product.sku) }, { $inc: { quantity: -product.quantity } });
-  });
-
   const order = await Order.findOneAndUpdate({ orderId: id }, { status }, { new: true });
   return res.status(200).json(order);
 };

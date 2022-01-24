@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import IOrder from 'order';
 
-const product = new Schema({
+export const product = new Schema({
   sku: { type: String, required: true },
   productName: { type: String, required: true },
   quantity: { type: Number, required: true },
