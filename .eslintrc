@@ -57,6 +57,7 @@
     "import/no-import-module-exports": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "import/no-unresolved": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-redeclare": [0, {"builtinGlobals": false}]
   }
 }
