@@ -30,6 +30,8 @@ const createSendToken = (user: IUser, statusCode: number, res: Response, msg: st
     });
 };
 
+const { NODE_ENV } = process.env;
+
 // create user
 
 const signUp: RequestHandler = async (req: Request, res: Response) => {
@@ -67,9 +69,15 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
 
   // send confirm email
   const confirmEmailToken = generateToken();
-  const confirmEmailLink = `${
-    process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://devilscrm.link'
-  }/emailActivation?token=${confirmEmailToken}`;
+
+  let confirmEmailLink: string;
+  if (NODE_ENV === 'production') {
+    confirmEmailLink = `${'https://blueperiod.link'}/emailActivation?token=${confirmEmailToken}`;
+  } else if (NODE_ENV === 'uat') {
+    confirmEmailLink = `${'https://devilscrm.link'}/emailActivation?token=${confirmEmailToken}`;
+  } else {
+    confirmEmailLink = `${'http://localhost:8000'}/emailActivation?token=${confirmEmailToken}`;
+  }
 
   const emailContent = emailTemplate.confirmEmail(firstName, confirmEmailLink);
 
@@ -232,9 +240,15 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Server error' });
   }
 
-  const resetPasswordLink = `${
-    process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://devilscrm.link'
-  }/resetPassword?token=${resetToken}`;
+  let resetPasswordLink: string;
+  if (NODE_ENV === 'production') {
+    resetPasswordLink = `${'https://blueperiod.link'}/resetPassword?token=${resetToken}`;
+  } else if (NODE_ENV === 'uat') {
+    resetPasswordLink = `${'https://devilscrm.link'}/resetPassword?token=${resetToken}`;
+  } else {
+    resetPasswordLink = `${'http://localhost:8000'}/resetPassword?token=${resetToken}`;
+  }
+
   const emailContent = emailTemplate.resetPasswordEmail(user.firstName, resetPasswordLink);
   const sendEmailResult = await sendEmail(req.body.email, 'Password change request', emailContent);
   if (!sendEmailResult) {
