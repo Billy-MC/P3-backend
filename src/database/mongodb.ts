@@ -12,7 +12,7 @@ export default async () => {
     DB_PASSWORD,
     DB_HOST,
     DB_DATABASE,
-    DE_HOST_UAT,
+    DB_HOST_UAT,
   } = process.env;
 
   let connectionString: string;
@@ -20,7 +20,7 @@ export default async () => {
   if (NODE_ENV === 'production') {
     connectionString = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_DATABASE}`;
   } else if (NODE_ENV === 'uat') {
-    connectionString = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DE_HOST_UAT}/${DB_DATABASE}`;
+    connectionString = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST_UAT}/${DB_DATABASE}`;
   } else {
     connectionString = `mongodb://${DB_HOST_LOCAL}:${DB_PORT}/${DB_DATABASE_LOCAL}`;
   }
