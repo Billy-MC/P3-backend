@@ -123,7 +123,7 @@ const signIn = async (req: Request, res: Response) => {
     const currentUser = await User.findOne({ email }).select('+password');
 
     if (!currentUser) {
-      return res.status(401).json({ error: 'User is not exist!' });
+      return res.status(401).json({ error: 'User does not exist!' });
     }
     if (currentUser.emailVerified === false) {
       return res.status(401).json({ error: 'Please verify your email' });
@@ -150,7 +150,7 @@ const updatePassword: RequestHandler = async (req: Request, res: Response) => {
   // Get user from collection
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    return res.status(401).json({ error: 'User is not exist!' });
+    return res.status(401).json({ error: 'User does not exist!' });
   }
 
   try {
@@ -211,7 +211,7 @@ const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.find().exec();
     if (!users) {
-      res.status(400).json({ error: 'No users exist' });
+      res.status(400).json({ error: 'User does not exist!' });
     }
     return res.status(200).json(users);
   } catch (e) {
