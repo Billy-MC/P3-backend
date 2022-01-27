@@ -72,7 +72,7 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
 
   let confirmEmailLink: string;
   if (NODE_ENV === 'production') {
-    confirmEmailLink = `${'http://blueperiod.link'}/emailActivation?token=${confirmEmailToken}`;
+    confirmEmailLink = `${'https://blueperiod.link'}/emailActivation?token=${confirmEmailToken}`;
   } else if (NODE_ENV === 'uat') {
     confirmEmailLink = `${'https://devilscrm.link'}/emailActivation?token=${confirmEmailToken}`;
   } else {
@@ -242,7 +242,7 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response) => {
 
   let resetPasswordLink: string;
   if (NODE_ENV === 'production') {
-    resetPasswordLink = `${'http://blueperiod.link'}/resetPassword?token=${resetToken}`;
+    resetPasswordLink = `${'https://blueperiod.link'}/resetPassword?token=${resetToken}`;
   } else if (NODE_ENV === 'uat') {
     resetPasswordLink = `${'https://devilscrm.link'}/resetPassword?token=${resetToken}`;
   } else {
