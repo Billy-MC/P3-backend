@@ -39,6 +39,7 @@ app.use(
       'https://devilscrm.link',
       'http://localhost:3000',
       'https://blueperiod.link',
+      'http://blueperiod.link',
       '*',
     ],
     credentials: true,
