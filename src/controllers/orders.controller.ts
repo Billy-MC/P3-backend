@@ -322,6 +322,12 @@ const updateOrderStatusById: RequestHandler = async (req: Request, res: Response
       { email: customerInfo.email },
       { $inc: { orderAccumulation: 1, totalSpent: totalPrice }, invoiceId: invoice.invoiceId },
     );
+    const order = await Order.findOneAndUpdate(
+      { orderId: id },
+      { status, invoiceId: invoice.invoiceId },
+      { new: true },
+    );
+    return res.status(200).json(order);
   }
   const order = await Order.findOneAndUpdate({ orderId: id }, { status }, { new: true });
   return res.status(200).json(order);
