@@ -29,7 +29,7 @@ const customerSchema = new Schema({
   },
   gender: {
     type: String,
-    enum: ['Male', 'Female', 'Other', 'Nottotell'],
+    enum: ['Male', 'Female', 'Other', 'Not to tell'],
     required: true,
   },
   address: {

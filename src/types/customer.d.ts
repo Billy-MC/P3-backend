@@ -11,7 +11,7 @@ enum Gender {
   MALE = 'Male',
   FEMALE = 'Female',
   OTHER = 'Other',
-  NOTTOTELL = 'NOTTOTELL',
+  SECRET = 'Not to tell',
 }
 
 enum Notification {
