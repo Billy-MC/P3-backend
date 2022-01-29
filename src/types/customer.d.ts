@@ -8,9 +8,9 @@ interface Address extends Document {
 }
 
 enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHER = 'Other',
   NOTTOTELL = 'NOTTOTELL',
 }
 
