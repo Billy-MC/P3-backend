@@ -13,7 +13,8 @@
     "build": "tsc -p .",
     "test": "jest",
     "lint": "eslint src --ext .ts",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "cp:env": "cp .env.example .env"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
